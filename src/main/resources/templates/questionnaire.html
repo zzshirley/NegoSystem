@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>问卷调查</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
+</head>
+
+<body>
+	<!--导航-->
+	<nav class="navbar navbar-default ">
+		<!-- 导航固定在顶部 -->
+		<div class="container">
+			<!-- 容器 -->
+			<!--小屏幕导航按钮和logo-->
+			<div class="navbar-header">
+				<button class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<!-- 绑定 -->
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a href="index.html" class="navbar-brand">阅读测评系统</a>
+			</div>
+			<!--小屏幕导航按钮和logo-->
+			<!--导航-->
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav ">
+					<li><a href="index.html">首页</a></li>
+					<li><a href="readingtest.html">阅读测试</a></li>
+					<li><a href="#html5">历史成绩</a></li>
+					<li class="active"><a href="#que">问卷调查</a></li>
+					<li><a href="#app">查阅资料</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown"><a id="dLabel" type="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							个人中心 <span class="caret"></span>
+					</a>
+						<ul class="dropdown-menu" aria-labelledby="dLabel">
+							<li><a href="index.html"><span
+									class="glyphicon glyphicon-screenshot"></span>&nbsp;&nbsp;前台首页</a>
+							</li>
+							<li><a href="index.html"><span
+									class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;个人主页</a></li>
+							<li><a href="index.html"><span
+									class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;个人设置</a></li>
+							<li><a href="index.html"><span
+									class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;账户中心</a>
+							</li>
+							<li><a href="index.html"><span
+									class="glyphicon glyphicon-heart"></span>&nbsp;&nbsp;我的收藏</a></li>
+						</ul></li>
+					<li><a href="#bbs"><span class="glyphicon glyphicon-off"></span>&nbsp;&nbsp;退出</a>
+					</li>
+				</ul>
+			</div>
+			<!--导航-->
+		</div>
+	</nav>
+	<!--问卷-->
+
+	<div id="que" th:action="@{/questionnaire}">
+		<div class="container">
+			<div class="row wow fadeInUp" data-wow-duration="1s"
+				data-wow-delay="1s">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="panel panel-info" th:action="@{/quessubmit}" method="post">
+						<div class="panel-heading">问卷调查</div>
+						<div class="panel-body">
+							<div class="alert alert-info" role="alert">
+								<strong>填写须知：</strong>
+								“阅读能力测评系统”是由华中师范大学国家数字化学习工程技术研究中心所研发的软件，目的让你了解自己的阅读能力。为了让我们更加了解你在阅读时会用哪些方法与技巧，希望你能依据你自己阅读的情况进行填答。调查的结果只会给你和老师知道，并供研究使用，不会用作其他用途，请放心填写问卷。
+							</div>
+							<table class=" table table-striped" >
+								<tbody>
+									<tr th:each="ques:${ques}">									
+									<td th:text=${ques.quesname}></td>
+									<td>
+									<div class="form-group">
+									<label class=radio-inline>
+									<input type="radio" name="RadioOptionsinrow" th:text="${ques.optiona}" th:value="${ques.answer}">
+									</label>
+									</td>
+									<td>
+									<label class=radio-inline>
+									<input type="radio" name="RadioOptionsinrow" th:text="${ques.optionb}" th:value="${ques.answer}">
+									</label>
+									</td>
+									<td>
+									<label class=radio-inline>
+									<input type="radio" name="RadioOptionsinrow" th:text="${ques.optionc}" th:value="${ques.answer}">
+									</label>
+									</td>
+									<td>
+									<label class=radio-inline>
+									<input type="radio" name="RadioOptionsinline" th:text="${ques.optiond}" th:value="${ques.answer}">
+									</label>
+									</td>
+									<td>
+									<label class=radio-inline>
+									<input type="radio" name="RadioOptionsinline" th:text="${ques.optione}" th:value="${ques.answer}">
+									</label>
+									</td>
+									</div>									
+									</tr>									
+								</tbody>
+							</table>
+							<button type="submit" class="btn btn-default">提交</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--问卷-->
+	<div th:replace="footer"></div>
+	<!--footer-->
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.singlePageNav.min.js"></script>
+	<script src="js/wow.min.js"></script>
+	<script>
+		$(function() {
+			//导航跳转效果插件
+			$('.nav').singlePageNav({
+				offset : 70
+			});
+			//小屏幕导航点击关闭菜单
+			$('.navbar-collapse a').click(function() {
+				$('.navbar-collapse').collapse('hide');
+			});
+			new WOW().init();
+		})
+	</script>
+</body>
+</html>

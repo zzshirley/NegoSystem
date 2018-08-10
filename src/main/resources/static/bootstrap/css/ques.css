@@ -1,0 +1,145 @@
+body {
+	font-family: 'Microsoft YaHei', sans-serif;
+}
+
+.mai-icon {
+	background: rgb(64, 210, 177);
+	color: #fff;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	margin-right: 20px;
+}
+/*导航栏：白色*/
+.navbar-default {
+	background-color: #fff;
+	border: none;
+	box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
+}
+
+.navbar-default .navbar-brand {
+	font-weight: bold;
+	color: #40D2B1;
+	height: 50px;
+	line-height: 25px;
+}
+
+.navbar-default .navbar-nav>li>a {
+	font-weight: bold;
+	color: #666;
+	height: 50px;
+	line-height: 25px;
+}
+
+.navbar-toggle {
+	margin-top: 17px;
+}
+
+.navbar-default .navbar-toggle:hover {
+	border-color: #40D2B1;
+	background-color: rgb(69, 210, 184);
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #fff;
+}
+
+.progress {
+	margin-bottom: 15px;
+}
+
+/*Í·Ïñ*/
+
+.wh64 {
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+}
+
+
+.mar_t15 {
+	margin-top: 15px;
+}
+
+
+
+.pad0 {
+	padding: 0;
+}
+
+
+/*page-header*/
+
+
+/*uesr_search*/
+
+.uesr_search {
+	padding: 10px;
+	border: solid 1px #ddd;
+	border-top: none;
+}
+
+
+/*tag*/
+
+.taglist {
+	padding-top: 15px;
+}
+
+.taglist .alert {
+	margin: 0 15px 15px 0;
+}
+
+#rediv {
+	border-color: #40D2B1;
+	background-color: rgb(69, 210, 184);
+	text-align: center;
+}
+
+#que {
+	height: 100%;
+	width: 100%;
+	padding: 0px 0;
+}
+
+#testview {
+	height: 0px;
+}
+#test{
+	width: 100%;
+	margin: 0px 0px;
+    height: 100%;
+}
+#test .col-md-6{
+	margin: 0px 0px;   
+}
+#test .iframe{
+	width: 100%;
+    height: 750px;   
+}
+#test .nav {
+	padding-top: 0px;
+}
+#test .page-header {
+	margin-top: 0;
+}
+
+#test .page-header h1 {
+	margin: 0;
+	font-size: 16px;
+}
+
+#test .panel .panel-body{
+	width:100%;
+	height: 100%;
+	min-height: 500px;
+}
+/*footer*/
+footer {
+	font-weight: 400;
+	text-align: center;
+	padding: 20px;
+}
+

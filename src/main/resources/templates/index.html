@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="text/html" />
+<title>可爱的晓彤彤</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" th:href="@{bootstrap/css/logo.css}" />
+<link rel="stylesheet" th:href="@{bootstrap/css/animate.css}" />
+</head>
+<body>
+	<!--导航-->
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<!-- 导航固定在顶部 -->
+		<div class="container">
+			<!-- 容器 -->
+			<!--小屏幕导航按钮和logo-->
+			<div class="navbar-header">
+				<button class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<!-- 绑定 -->
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a href="index.html" class="navbar-brand">阅读测评系统</a>
+			</div>
+			<!--小屏幕导航按钮和logo-->
+			<!--导航-->
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="index.html">首页</a></li>
+					<li><a href="readingtest.html">阅读测试</a></li>
+					<li><a href="#html5">历史成绩</a></li>
+					<li><a href="questionnaire.html">问卷调查</a></li>
+					<li><a href="#app">查阅资料</a></li>
+					<li><a href="#contact">个人中心</a></li>
+				</ul>
+			</div>
+			<!--导航-->
+
+		</div>
+	</nav>
+	<!--导航-->
+	<!--home-->
+	<section id="home">
+		<div class="lvjing">
+			<div class="container">
+				<div class="row wow fadeInUp" data-wow-duration="1s"
+					data-wow-delay="1s">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<h1>欢迎来到阅读测评系统</h1>
+						<p>
+							欢迎选择郑大大的课程👏<br /> 希望通过本门课程的学习，你能够学有所成！
+						</p>
+						<img th:src="@{bootstrap/img/pic1.jpg}" class="img-responsive"
+							alt="php" />
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--home-->
+	<!--footer-->
+	<footer>
+		<div th:replace="footer :: footer"></div>
+	</footer>
+	<!--footer-->
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
+	<script src="../bootstrap/js/wow.min.js"></script>
+	<script>
+		$(function() {
+			/*导航跳转效果插件
+			$('.nav').singlePageNav({
+			    offset:70
+			});*/
+			/*小屏幕导航点击关闭菜单*/
+			$('.navbar-collapse a').click(function() {
+				$('.navbar-collapse').collapse('hide');
+			});
+			new WOW().init();
+		})
+	</script>
+</body>
+</html>

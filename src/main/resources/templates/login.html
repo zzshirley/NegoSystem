@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="text/html"/>
+		<title>登录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+		<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="bootstrap/css/login.css" />
+		<style type="text/css">
+			ul li{
+            		list-style: none;
+            		}
+    		</style>
+	</head>
+	<body>
+		<!--contact-->
+		<div id="back">
+			<div id="contact">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6  col-md-offset-3" style="background-color: dodgerblue;">
+							<div class="row">
+								<div class="col-md-5  wow fadeInLeft" style="background-color: dodgerblue;">
+									<div class="col-md-12 " id="right">
+										<img src="../bootstrap/img/read.png" class="img-responsive center-block" alt="php" />
+										<h2>
+                             				阅读测评系统
+                                     </h2>
+									</div>
+								</div>
+								<div class="col-md-7  wow fadeInRight" style="background-color: whitesmoke;">
+									<form  accept-charset="utf-8" th:action="@{/loginVerify}" method="post">
+										<div class="col-md-12">
+											<h2 style="color: dodgerblue;">										
+											登录
+										</h2>
+										</div>
+										<div class="col-md-12">
+											<input type="text" id ="stuid" name="stuid" class="form-control" placeholder="账号" />
+										</div>
+										<div class="col-md-12">
+											<input type="password" id ="password" name="password" class="form-control" placeholder="密码" />
+										</div>		
+										<div class="col-md-12">
+											<input type="submit"  class="form-control" value="提交"/>
+										</div>
+										<div class="col-md-12">
+											 <div class="alert alert-danger" th:if="${loginError}" >
+                               					<strong >用户名或者用户密码不正确，请重新输入</strong>
+                            					 </div> 
+                             			</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--contact-->
+			</div>
+		</div>
+	</body>
+</html>
