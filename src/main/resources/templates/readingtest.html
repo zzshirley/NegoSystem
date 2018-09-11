@@ -1,207 +1,307 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="X-UA-Compatible" content="text/html" />
 	<title>阅读测试</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no" />
 	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
 </head>
 
 <body>
 	<!--导航-->
-	<nav class="navbar navbar-default ">
-		<!-- 导航固定在顶部 -->
-		<div class="container">
-			<!-- 容器 -->
-			<!--小屏幕导航按钮和logo-->
-			<div class="navbar-header">
-				<button class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<!-- 绑定 -->
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a href="index.html" class="navbar-brand">阅读测评系统</a>
-			</div>
-			<!--小屏幕导航按钮和logo-->
-			<!--导航-->
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav ">
-					<li><a href="index.html">首页</a></li>
-					<li class="active"><a href="">阅读测试</a></li>
-					<li><a href="#html5">历史成绩</a></li>
-					<li><a href="questionnaire.html">问卷调查</a></li>
-					<li><a href="#app">查阅资料</a></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown"><a id="dLabel" type="button"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							个人中心 <span class="caret"></span>
-					</a>
-						<ul class="dropdown-menu" aria-labelledby="dLabel">
-							<li><a href="index.html"><span
-									class="glyphicon glyphicon-screenshot"></span>&nbsp;&nbsp;前台首页</a>
-							</li>
-							<li><a href="index.html"><span
-									class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;个人主页</a></li>
-							<li><a href="index.html"><span
-									class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;个人设置</a></li>
-							<li><a href="index.html"><span
-									class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;账户中心</a>
-							</li>
-							<li><a href="index.html"><span
-									class="glyphicon glyphicon-heart"></span>&nbsp;&nbsp;我的收藏</a></li>
-						</ul></li>
-					<li><a href="#bbs"><span class="glyphicon glyphicon-off"></span>&nbsp;&nbsp;退出</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+	<div th:replace="navbar"></div>
 	<!--导航-->
 
 	<!--pdf显示-->
-		<div id="test">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="page-header">
-							<h1>阅读测试</h1>
-						</div>
-						<ul class="nav nav-tabs">
-							<li class="active">
-								<a href="user_list.html">文章一</a>
-							</li>
-							<li>
-								<a href="uesr_search.html">文章二</a>
-							</li>
-							<li>
-								<a href="" role="button" data-toggle="modal" data-target="#myModal">文章三</a>
-							</li>
-						</ul>
-						<div class="alert alert-info" role="alert">
-							<strong>测试须知：</strong> “阅读能力测评系统”是由华中师范大学国家数字化学习工程技术研究中心所研发的软件，目的让你了解自己的阅读能力。这次测评共有4篇文章，一共有30道题目。测评的结果只会给你和老师知道，并供研究使用，不会用作其他用途，请放心测评。”
-						</div>
+	<div id="test" th:action="@{/readingtest}">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="page-header">
+						<h1>阅读测试</h1>
 					</div>
-					<!--pdf显示-->
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="user_list.html">文章一</a></li>
+						<li><a href="uesr_search.html">文章二</a></li>
+						<li><a href="" role="button" data-toggle="modal"
+							data-target="#myModal">文章三</a></li>
+					</ul>
+					<div class="alert alert-info" role="alert">
+						<strong>测试须知：</strong>
+						“阅读能力测评系统”是由华中师范大学国家数字化学习工程技术研究中心所研发的软件，目的让你了解自己的阅读能力。这次测评共有4篇文章，一共有30道题目。测评的结果只会给你和老师知道，并供研究使用，不会用作其他用途，请放心测评。”
+					</div>
+				</div>
+				<!--pdf显示-->
 
-					<div class="col-md-6">
-						<iframe th:src="@{bootstrap/pdf/2A-SRL.pdf}" id="iframeId" style="width:100%; height:740px">
-							<a th:href="@{bootstrap/pdf/2A-SRL.pdf}">Download PDF</a>
-						</iframe>
-					</div>
-					<!--答题卡-->
-					<div class="col-md-6">
-						<div class="panel panel-info">
-							<div class="panel-heading">答题卡</div>
-							<div style="overflow:scroll; height:700px; width: 100%;">
-								<div class="panel-body">
-									<ul class="list-group">
-										<div class="title">Q1：我对阅读文章很感兴趣</div>
-										<div class="form-check">
-											<label class="radio-inline">
-			<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="a"> 非常不同意
-		</label>
-											<label class="radio-inline">
-  			<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="b"> 有点不同意
-		</label>
-											<label class="radio-inline">
-  			<input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="c"> 没意见
-		</label>
-											<label class="radio-inline">
-  			<input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="d"> 有点同意
-		</label>
-											<label class="radio-inline">
-  			<input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="d"> 非常同意
-		</label>
-										</div>
-										<div class="title">Q1：我对阅读文章很感兴趣</div>
-										<div class="matrix" id="mycheckbox">
-											<div class="form-check">
-												<label>				<input type="checkbox" >非常不同意<br>
-													<input type="checkbox" >有点不同意<br>
-													<input type="checkbox" >没意见<br>
-													<input type="checkbox" >有点同意<br>
-													<input type="checkbox" >非常同意	<br>												
-													</label>
+				<div class="col-md-6">
+					<iframe th:src="@{bootstrap/pdf/2A-SRL.pdf}" id="iframeId"
+						style="width: 100%; height: 740px">
+						<a th:href="@{bootstrap/pdf/2A-SRL.pdf}">Download PDF</a>
+					</iframe>
+				</div>
+				<!--答题卡-->
+				<div class="col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">答题卡</div>
+						<div style="overflow: scroll; height: 700px; width: 100%;">
+							<div class="panel-body">
+								<form class="form-group" action="/testsubmit" method="post">
+									<div class="list-group" id="queslist">
+										 <a class="list-group-item"  id="list1">
+											<h5 id="quesrl01" th:text="${papers.get(0)}"></h5>
+											<p id="opsrl01" th:text="${ques1opt.get(0).options}">
+											<div class="radio-inline">
+												<input  id="radio1" type="radio" th:name="${ques1opt.get(0).id}" th:value="a">正确<br />
 											</div>
-										</div>
-										<div class="title">Q1：我对阅读文章很感兴趣</div>
-										<div class="matrix" id="mycheckbox">
-											<div class="form-check">
-												<label>
-													<input type="checkbox" >非常不同意<br>
-													<input type="checkbox" >有点不同意<br>
-													<input type="checkbox" >没意见<br>
-													<input type="checkbox" >有点同意<br>
-													<input type="checkbox" >非常同意	<br>												
-													</label>
+											<div class="radio-inline">
+												<input id="radio2" type="radio" th:name="${ques1opt.get(0).id}" th:value="b">错误<br />
 											</div>
-										</div>
-										<div class="title">Q1：我对阅读文章很感兴趣</div>
-										<div class="matrix" id="mycheckbox">
-											<div class="form-check">
-												<label>
-													<input type="checkbox" >非常不同意<br>
-													<input type="checkbox" >有点不同意<br>
-													<input type="checkbox" >没意见<br>
-													<input type="checkbox" >有点同意<br>
-													<input type="checkbox" >非常同意	<br>												
-													</label>
+											<div class="radio-inline">
+												<input id="radio3"type="radio" th:name="${ques1opt.get(0).id}" th:value="c">不知道<br />
 											</div>
-										</div>
-										<div class="title">Q1：我对阅读文章很感兴趣</div>
-										<div class="matrix" id="mycheckbox">
-											<div class="form-check">
-												<label>
-													<input type="checkbox" >非常不同意<br>
-													<input type="checkbox" >有点不同意<br>
-													<input type="checkbox" >没意见<br>
-													<input type="checkbox" >有点同意<br>
-													<input type="checkbox" >非常同意	<br>												
-													</label>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list2">
+											<h5 id="quesrl02" th:text="${papers.get(0)}"></h5>
+											<p id="opsrl02" th:text="${ques1opt.get(1).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(1).id}" th:value="a">正确<br />
 											</div>
-										</div>
-										<div class="title">Q1：我对阅读文章很感兴趣</div>
-										<div class="matrix" id="mycheckbox">
-											<div class="form-check">
-												<label>
-													<input type="checkbox" >非常不同意<br>
-													<input type="checkbox" >有点不同意<br>
-													<input type="checkbox" >没意见<br>
-													<input type="checkbox" >有点同意<br>
-													<input type="checkbox" >非常同意	<br>												
-													</label>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(1).id}" th:value="b">错误<br />
 											</div>
-										</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(1).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list3">
+											<h5 id="quesrl03" th:text="${papers.get(0)}"></h5>
+											<p id="opsrl03" th:text="${ques1opt.get(2).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(2).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(2).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(2).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list4">
+											<h5 id="quesrl04" th:text="${papers.get(0)}"></h5>
+											<p id="opsrl04" th:text="${ques1opt.get(3).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(3).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(3).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(3).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list5">
+											<h5 id="quesrl05" th:text="${papers.get(0)}"></h5>
+											<p id="opsrl05" th:text="${ques1opt.get(4).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(4).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(4).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques1opt.get(4).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list6">
+											<h5 id="quesrl06" th:text="${papers.get(1)}"></h5>
+											<p id="opsrl06" th:text="${ques2opt.get(0).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(0).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(0).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(0).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list7">
+											<h5 id="quesrl07" th:text="${papers.get(1)}"></h5>
+											<p id="opsrl07" th:text="${ques2opt.get(1).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(1).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(1).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(1).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list8">
+											<h5 id="quesrl08" th:text="${papers.get(1)}"></h5>
+											<p id="opsrl08" th:text="${ques2opt.get(2).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(2).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(2).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(2).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list9">
+											<h5 id="quesrl09" th:text="${papers.get(1)}"></h5>
+											<p id="opsrl09" th:text="${ques3opt.get(3).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(3).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(3).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(3).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list10">
+											<h5 id="quesrl010" th:text="${papers.get(1)}"></h5>
+											<p id="opsrl010" th:text="${ques1opt.get(4).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(4).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(4).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques2opt.get(4).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list11">
+											<h5 id="quesrl011" th:text="${papers.get(2)}"></h5>
+											<p id="opsrl011" th:text="${ques3opt.get(0).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(0).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(0).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(0).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list12">
+											<h5 id="quesrl012" th:text="${papers.get(2)}"></h5>
+											<p id="opsrl012" th:text="${ques3opt.get(1).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(1).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(1).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(1).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list13">
+											<h5 id="quesrl013" th:text="${papers.get(2)}"></h5>
+											<p id="opsrl013" th:text="${ques3opt.get(2).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(2).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(2).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(2).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list14">
+											<h5 id="quesrl014" th:text="${papers.get(2)}"></h5>
+											<p id="opsrl014" th:text="${ques3opt.get(3).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(3).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(3).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(3).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+										<a class="list-group-item"  id="list15">
+											<h5 id="quesrl015" th:text="${papers.get(2)}"></h5>
+											<p id="opsrl015" th:text="${ques1opt.get(4).options}">
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(4).id}" th:value="a">正确<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(4).id}" th:value="b">错误<br />
+											</div>
+											<div class="radio-inline">
+												<input type="radio" th:name="${ques3opt.get(4).id}" th:value="c">不知道<br />
+											</div>
+											</p>
+										</a>
+									</div>
+									<ul class="pagination">
+										<li id="btn1"><a href="javascript:void(0);">1</a></li>
+										<li id="btn2"><a href="javascript:void(0);">2</a></li>
+										<li id="btn3"><a href="javascript:void(0);">3</a></li>
+										<li id="btn4"><a href="javascript:void(0);">4</a></li>
+										<li id="btn5"><a href="javascript:void(0);">5</a></li>
+										<li id="btn6"><a href="javascript:void(0);">6</a></li>
+										<li id="btn7"><a href="javascript:void(0);">7</a></li>
+										<li id="btn8"><a href="javascript:void(0);">8</a></li>
+										<li id="btn9"><a href="javascript:void(0);">9</a></li>
+										<li id="btn10"><a href="javascript:void(0);">10</a></li>
+										<li id="btn11"><a href="javascript:void(0);">11</a></li>
+										<li id="btn12"><a href="javascript:void(0);">12</a></li>
+										<li id="btn13"><a href="javascript:void(0);">13</a></li>
+										<li id="btn14"><a href="javascript:void(0);">14</a></li>
+										<li id="btn15"><a href="javascript:void(0);">15</a></li>
 									</ul>
-									<button type="submit" class="btn btn-default">提交</button>
-								</div>
+									<input type="submit" class="btn btn-default">
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
+	</div>
 	<!--答题卡-->
 
 	<!--footer-->
-	<div th:replace="footer"></div>
-	<!--footer-->
-	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="js/jquery.singlePageNav.min.js" type="text/javascript"></script>
-	<script src="js/wow.min.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		$(function() {
+	
+	<div th:replace="footer::footer"></div>
+	
+	
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
+	<script src="../bootstrap/js/wow.min.js"></script>
+	<script th:inline="javascript">
+		var list=new Array();
+		list=["#list1","#list2","#list3","#list4","#list5","#list6","#list7","#list8","#list9","#list10","#list11","#list12","#list13","#list14","#list15"]
+        $(function() {
 			/*导航跳转效果插件
 			$('.nav').singlePageNav({
 			    offset:70
@@ -212,6 +312,135 @@
 			});
 			new WOW().init();
 		})
+        $(function() {
+            for(var i=1;i<list.length;i++){
+                    $(list[i]).hide();
+            }
+        })
+        $(function(){
+            $("#btn1").click(function(){
+                $("#list1").show();
+                for(var i=1;i<list.length;i++){
+                        $(list[i]).hide();
+                }
+            })
+        })
+		$(function(){
+		    $("#btn2").click(function(){
+		        $("#list2").show();
+		        for(var i=0;i<list.length;i++){
+		            if(list[i]!="#list2"){
+                        $(list[i]).hide();
+					}
+				}
+			})
+		})
+        $(function(){
+            $("#btn3").click(function(){
+                $("#list3").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list3"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+        })
+        $(function(){
+            $("#btn4").click(function(){
+                $("#list4").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list4"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn5").click(function(){
+                $("#list5").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list5"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn6").click(function(){
+                $("#list6").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list6"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn7").click(function(){
+                $("#list7").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list7"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn8").click(function(){
+                $("#list8").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list8"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn9").click(function(){
+                $("#list9").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list9"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn10").click(function(){
+                $("#list10").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list10"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn11").click(function(){
+                $("#list11").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list11"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn12").click(function(){
+                $("#list12").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list12"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn13").click(function(){
+                $("#list13").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list13"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn14").click(function(){
+                $("#list14").show();
+                for(var i=0;i<list.length;i++){
+                    if(list[i]!="#list14"){
+                        $(list[i]).hide();
+                    }
+                }
+            })
+            $("#btn15").click(function(){
+                $("#list15").show();
+                for(var i=0;i<list.length-1;i++){
+                        $(list[i]).hide();
+                }
+            })
+        })
 	</script>
 </body>
 </html>

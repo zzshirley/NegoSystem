@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuesRepo extends CrudRepository<Question,String>{
 	
-	public List<Question> findByPaperid(String paperid);
+	List<Question> findByPaperid(String paperid);
 
 }

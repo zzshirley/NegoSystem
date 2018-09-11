@@ -16,6 +16,9 @@
 </head>
 
 <body>
+	<!--导航-->
+	<div th:replace="navbar"></div>
+	<!--导航-->
 	<!--问卷-->
 	<div id="que" th:action="@{/questionnaire}">
 		<div class="container">
@@ -36,27 +39,27 @@
 									<td th:text=${ques.quesname}></td>
 									<td>
                                         <label class="radio-inline">
-                                        <input type="radio" th:name="|check(RadioOptionsinrow,'${ques.quesid}')|" th:text="${ques.optiona}" th:value="${ques.optiona}">
+                                        <input type="radio" th:name="${ques.quesid}" th:text="非常不同意" th:value="a">
                                         </label>
 									</td>
 									<td>
                                         <label class="radio-inline">
-                                        <input type="radio" th:name="|check(RadioOptionsinrow,'${ques.quesid}')|" th:text="${ques.optionb}" th:value="${ques.optionb}">
+                                        <input type="radio" th:name="${ques.quesid}" th:text="有点不同意" th:value="b">
                                         </label>
 									</td>
 									<td>
                                         <label class="radio-inline">
-                                        <input type="radio" th:name="|check(RadioOptionsinrow,'${ques.quesid}')|" th:text="${ques.optionc}" th:value="${ques.optionc}">
+                                        <input type="radio" th:name="${ques.quesid}" th:text="同意" th:value="c">
                                         </label>
 									</td>
 									<td>
                                         <label class="radio-inline">
-                                        <input type="radio" th:name="|check(RadioOptionsinrow,'${ques.quesid}')|" th:text="${ques.optiond}" th:value="${ques.optiond}">
+                                        <input type="radio" th:name="${ques.quesid}" th:text="有点同意" th:value="d">
                                         </label>
 									</td>
 									<td>
                                         <label class="radio-inline">
-                                        <input type="radio" th:name="|check(RadioOptionsinrow,'${ques.quesid}')|" th:text="${ques.optione}" th:value="${ques.optione}">
+                                        <input type="radio" th:name="${ques.quesid}" th:text="非常同意" th:value="e">
                                         </label>
 									</td>
 									</tr>
@@ -65,7 +68,6 @@
 							<input type="submit" class="btn btn-default">
 						</form>
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -74,16 +76,16 @@
 	<!--问卷-->
 	<div th:replace="footer"></div>
 	<!--footer-->
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="bootstrap/js/jquery.singlePageNav.min.js"></script>
-	<script src="bootstrap/js/wow.min.js"></script>
-	<script>
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
+	<script src="../bootstrap/js/wow.min.js"></script>
+	<script >
 		$(function() {
-			//导航跳转效果插件
+			/*导航跳转效果插件
 			$('.nav').singlePageNav({
-				offset : 70
-			});
-			//小屏幕导航点击关闭菜单
+			    offset:70
+			});*/
+			/*小屏幕导航点击关闭菜单*/
 			$('.navbar-collapse a').click(function() {
 				$('.navbar-collapse').collapse('hide');
 			});

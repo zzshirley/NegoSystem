@@ -9,7 +9,6 @@
 	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" th:href="@{bootstrap/css/logo.css}" />
-	<link rel="stylesheet" th:href="@{bootstrap/css/animate.css}" />
 </head>
 <body>
 	<!--导航-->
@@ -35,7 +34,7 @@
 					<li><a href="readingtest.html">阅读测试</a></li>
 					<li><a href="#html5">历史成绩</a></li>
 					<li><a href="questionnaire.html">问卷调查</a></li>
-					<li><a href="#app">查阅资料</a></li>
+					<li><a href="resource.html">查阅资料</a></li>
 					<li><a href="#contact">个人中心</a></li>
 				</ul>
 			</div>
@@ -57,7 +56,7 @@
 							欢迎选择郑大大的课程👏<br /> 希望通过本门课程的学习，你能够学有所成！
 						</p>
 						<img th:src="@{bootstrap/img/pic1.jpg}" class="img-responsive"
-							alt="php" />
+						/>
 					</div>
 					<div class="col-md-1"></div>
 				</div>
@@ -70,7 +69,6 @@
 		<div th:replace="footer :: footer"></div>
 	</footer>
 	<!--footer-->
-	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
 	<script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
 	<script src="../bootstrap/js/wow.min.js"></script>

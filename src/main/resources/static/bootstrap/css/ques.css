@@ -117,7 +117,7 @@ body {
 }
 #test .iframe{
 	width: 100%;
-    height: 750px;   
+    height: 750px;
 }
 #test .nav {
 	padding-top: 0px;
@@ -136,6 +136,58 @@ body {
 	height: 100%;
 	min-height: 500px;
 }
+
+#test .form-group .answer-sheet-num {
+	margin-top: 15px;
+	display: none
+}
+
+#test.form-group  .answer-sheet-num li {
+	float: left;
+	margin-right: 10px
+}
+
+#test.form-group .answer-sheet-num a {
+	position: relative;
+	display: block;
+	color: #dce4ec;
+	font-size: 16px;
+	width: 40px;
+	text-align: center;
+	height: 40px;
+	line-height: 40px
+}
+
+#test.form-group .answer-sheet-num a.answer-done {
+	color: #59b59c
+}
+
+#test.form-group .answer-sheet-num a.answering-num, .answer-sheet-num a:hover {
+	display: block;
+	background: #59b59c;
+	color: #FFF
+}
+
+#test.form-group .answer-sheet-num .mark-spot:after {
+	content: "";
+	position: absolute;
+	right: 3px;
+	top: 3px;
+	background: #aaa;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%
+}
+
+#test.form-group .answer-sheet-num .answer-done.mark-spot:after {
+	background: #1ABC9C
+}
+
+#test.form-group .answer-sheet-num .answering-num.mark-spot:after, .answer-sheet-num .mark-spot:hover:after {
+	background: #fff
+}
+
+
 /*footer*/
 footer {
 	font-weight: 400;

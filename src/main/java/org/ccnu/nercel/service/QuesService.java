@@ -17,12 +17,12 @@ import org.springframework.stereotype.Service;
 public class QuesService {
 	
 	@Autowired
-	 private QuesRepo quesrepo;
+	private QuesRepo quesrepo;
 	
 	public List<Question> QuesList(Question ques){
 		
 	     List<Question> quesList = quesrepo.findByPaperid(ques.getPaperid());
-	     System.out.println(quesList);     
+	     //System.out.println(quesList);
 	     return quesList;
 	  }
 	

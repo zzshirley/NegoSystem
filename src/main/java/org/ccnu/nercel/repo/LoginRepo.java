@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LoginRepo extends CrudRepository<User,Integer>{
 	
-	public List<User> findByStuidAndPassword(int stuid,String password);
+	List<User> findByStuidAndPassword(String stuid, String password);
 }

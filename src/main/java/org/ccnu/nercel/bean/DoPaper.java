@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author xiaotong
@@ -19,8 +20,12 @@ public class DoPaper {
 	private int id;
 
 	// 试卷编号
-	@Column(name = "paperid", unique = true)
-	private int paperid;
+	@Column(name = "paperid")
+	private String paperid;
+	
+	// 学生ID
+	@Column(name = "stuid")
+	private String stuid;
 
 	// 开始时间
 	@Column(name = "begintime")
@@ -32,26 +37,55 @@ public class DoPaper {
 
 	// 试卷分数
 	@Column(name = "score")
-	private String score;
+	private int score;
 
 	// 试卷状态
 	@Column(name = "paperstate")
 	private String paperstate;
 
+	// 学生答案
+	@Column(name = "paperanswer")
+	private String paperanswer;
+
 	public DoPaper() {
 
 	}
 	
-	public DoPaper(int id,int paperid,String begintime,
-			String endtime,String score,String paperstate) {
+	public DoPaper(int id,String paperid,String stuid,String begintime,
+			String endtime,int score,String paperstate,String paperanswer) {
 		super();
 		this.id=id;
 		this.paperid=paperid;
+		this.stuid=stuid;
 		this.begintime=begintime;
 		this.endtime=endtime;
 		this.score=score;
-		this.paperstate=paperstate;		
+		this.paperstate=paperstate;
+		this.paperanswer=paperanswer;
 	}
+
+	@Override
+	public String toString() {
+		return "DoPaper{" +
+				"id=" + id +
+				", paperid=" + paperid +
+				", stuid='" + stuid + '\'' +
+				", begintime='" + begintime + '\'' +
+				", endtime='" + endtime + '\'' +
+				", score='" + score + '\'' +
+				", paperstate='" + paperstate + '\'' +
+				", paperanswer='" + paperanswer + '\'' +
+				'}';
+	}
+
+	public String getStuid() {
+		return stuid;
+	}
+
+	public void setStuid(String stuid) {
+		this.stuid = stuid;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -60,11 +94,11 @@ public class DoPaper {
 		this.id = id;
 	}
 
-	public int getPaperid() {
+	public String getPaperid() {
 		return paperid;
 	}
 
-	public void setPaperid(int paperid) {
+	public void setPaperid(String paperid) {
 		this.paperid = paperid;
 	}
 
@@ -84,15 +118,15 @@ public class DoPaper {
 		this.endtime = endtime;
 	}
 
-	public String getScore() {
-		return score;
-	}
+    public int getScore() {
+        return score;
+    }
 
-	public void setScore(String score) {
-		this.score = score;
-	}
+    public void setScore(int score) {
+        this.score = score;
+    }
 
-	public String getPaperstate() {
+    public String getPaperstate() {
 		return paperstate;
 	}
 
@@ -100,11 +134,11 @@ public class DoPaper {
 		this.paperstate = paperstate;
 	}
 
-	@Override
-	public String toString() {
-		return "DoPaper [id=" + id + ", paperid=" + paperid + ", begintime=" + begintime + ", endtime=" + endtime
-				+ ", score=" + score + ", paperstate=" + paperstate + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
+	public String getPaperanswer() {
+		return paperanswer;
 	}
 
+	public void setPaperanswer(String paperanswer) {
+		this.paperanswer = paperanswer;
+	}
 }

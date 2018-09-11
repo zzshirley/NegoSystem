@@ -20,16 +20,5 @@ public class IndexController {
 	public String index() {		
 		return "index";	
 	}
-	
-	@PostMapping("/quesubmit")
-	public String quesubmit(Model model,ArrayList<String> item) {
-		
-		return "quesdone";		
-	}
-	
-	@RequestMapping("/readingtest")
-	public String readingtest() {		
-		return "readingtest";	
-	}
 
 }

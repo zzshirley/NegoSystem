@@ -6,10 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
-* 试卷（包括问卷调查）
+* 试卷类
 * @author xiaotong
 * @version 2018年8月1日 下午1:26:07
 */
+
 @Entity
 public class Paper {
 	
@@ -20,39 +21,43 @@ public class Paper {
 	private int id;
 	
 	//试卷编号
-	@Column(name="paperid",unique = true)
-	private int paperid;
+	@Column(name="paperid")
+	private String paperid;
 	
 	//主题编号
 	@Column(name="themeid")
 	private int themeid;
 	
-	//学生学号
-	@Column(name="stuid")
-	private int stuid;
-	
-	//问题编号
-	@Column(name="questionid")
-	private int questionid;
-	
+	//问题1
+	@Column(name="questiona")
+	private String questiona;
+
+	//问题2
+	@Column(name="questionb")
+	private String questionb;
+
+	//问题3
+	@Column(name="questionc")
+	private String questionc;
+
 	//试卷名称
 	@Column(name="papername")
 	private String papername;
 	
-	
-	
+
 	public Paper() {
 		
 	}
 	
-	public Paper(int id,int paperid,int themeid,int stuid,
-			int questionid,String papername) {
+	public Paper(int id,String paperid,int themeid,
+			String questiona,String questionb,String questionc,String papername) {
 		super();
 		this.id=id;
 		this.paperid=paperid;
 		this.themeid=themeid;
-		this.stuid=stuid;
-		this.questionid=questionid;
+		this.questiona=questiona;
+		this.questionb=questionb;
+		this.questionc=questionc;
 		this.papername=papername;
 	}
 
@@ -64,11 +69,11 @@ public class Paper {
 		this.id = id;
 	}
 
-	public int getPaperid() {
+	public String getPaperid() {
 		return paperid;
 	}
 
-	public void setPaperid(int paperid) {
+	public void setPaperid(String paperid) {
 		this.paperid = paperid;
 	}
 
@@ -80,20 +85,28 @@ public class Paper {
 		this.themeid = themeid;
 	}
 
-	public int getStuid() {
-		return stuid;
+	public String getQuestiona() {
+		return questiona;
 	}
 
-	public void setStuid(int stuid) {
-		this.stuid = stuid;
+	public void setQuestiona(String questiona) {
+		this.questiona = questiona;
 	}
 
-	public int getQuestionid() {
-		return questionid;
+	public String getQuestionb() {
+		return questionb;
 	}
 
-	public void setQuestionid(int questionid) {
-		this.questionid = questionid;
+	public void setQuestionb(String questionb) {
+		this.questionb = questionb;
+	}
+
+	public String getQuestionc() {
+		return questionc;
+	}
+
+	public void setQuestionc(String questionc) {
+		this.questionc = questionc;
 	}
 
 	public String getPapername() {
@@ -106,9 +119,14 @@ public class Paper {
 
 	@Override
 	public String toString() {
-		return "Paper [id=" + id + ", paperid=" + paperid + ", themeid=" + themeid + ", stuid=" + stuid
-				+ ", questionid=" + questionid + ", papername=" + papername + "]";
+		return "Paper{" +
+				"id=" + id +
+				", paperid=" + paperid +
+				", themeid=" + themeid +
+				", questiona=" + questiona +
+				", questionb=" + questionb +
+				", questionc=" + questionc +
+				", papername='" + papername + '\'' +
+				'}';
 	}
-
-	
 }

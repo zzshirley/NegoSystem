@@ -27,7 +27,7 @@ public class User {
 	
     @Column(name = "stuid",unique = true)
     @NotNull(message="学号不能为空！")
-	private int stuid;
+	private String stuid;
 	
     @Column(name = "stuname")
     private String stuname;
@@ -76,11 +76,12 @@ public class User {
 		this.id = id;
 	}
 
-	public int getStuid() {
+	@NotNull
+	public String getStuid() {
 		return stuid;
 	}
 
-	public void setStuid(int stuid) {
+	public void setStuid(@NotNull String stuid) {
 		this.stuid = stuid;
 	}
 

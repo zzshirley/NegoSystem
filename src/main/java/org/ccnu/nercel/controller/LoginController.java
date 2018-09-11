@@ -36,7 +36,7 @@ public class LoginController {
 	}
 	
 	@PostMapping("/loginVerify")
-    public String loginVerify(int stuid,String password,HttpSession session,Model model){
+    public String loginVerify(String stuid,String password,HttpSession session,Model model){
         User user = new User();
         user.setStuid(stuid);
         user.setPassword(password);
