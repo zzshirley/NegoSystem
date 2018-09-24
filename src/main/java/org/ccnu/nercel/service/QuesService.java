@@ -22,7 +22,7 @@ public class QuesService {
 	public List<Question> QuesList(Question ques){
 		
 	     List<Question> quesList = quesrepo.findByPaperid(ques.getPaperid());
-	     //System.out.println(quesList);
+	     System.out.println(quesList);
 	     return quesList;
 	  }
 	

@@ -80,17 +80,6 @@ public class PaperQuesOption {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PaperQuesOption that = (PaperQuesOption) o;
-        return id == that.id &&
-                Objects.equals(question, that.question) &&
-                Objects.equals(options, that.options) &&
-                Objects.equals(istrueoption, that.istrueoption);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(id, question, options, istrueoption);
     }

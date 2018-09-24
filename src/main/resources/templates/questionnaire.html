@@ -13,6 +13,7 @@
     <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
+
 </head>
 
 <body>
@@ -24,7 +25,7 @@
 		<div class="container">
 			<div class="row wow fadeInUp" data-wow-duration="1s"
 				data-wow-delay="1s">
-				<div class="col-md-10 col-md-offset-1">
+				<div class="col-md-8 col-md-offset-2">
 					<div class="panel panel-info" >
 						<div class="panel-heading">问卷调查</div>
 						<div class="panel-body">
@@ -33,39 +34,32 @@
 								“阅读能力测评系统”是由华中师范大学国家数字化学习工程技术研究中心所研发的软件，目的让你了解自己的阅读能力。为了让我们更加了解你在阅读时会用哪些方法与技巧，希望你能依据你自己阅读的情况进行填答。调查的结果只会给你和老师知道，并供研究使用，不会用作其他用途，请放心填写问卷。
 							</div>
 							<form action="/quessubmit" method="post">
-							<table class=" table table-striped" >
-								<tbody>
-									<tr th:each="ques:${ques}">
-									<td th:text=${ques.quesname}></td>
-									<td>
-                                        <label class="radio-inline">
-                                        <input type="radio" th:name="${ques.quesid}" th:text="非常不同意" th:value="a">
-                                        </label>
-									</td>
-									<td>
-                                        <label class="radio-inline">
-                                        <input type="radio" th:name="${ques.quesid}" th:text="有点不同意" th:value="b">
-                                        </label>
-									</td>
-									<td>
-                                        <label class="radio-inline">
-                                        <input type="radio" th:name="${ques.quesid}" th:text="同意" th:value="c">
-                                        </label>
-									</td>
-									<td>
-                                        <label class="radio-inline">
-                                        <input type="radio" th:name="${ques.quesid}" th:text="有点同意" th:value="d">
-                                        </label>
-									</td>
-									<td>
-                                        <label class="radio-inline">
-                                        <input type="radio" th:name="${ques.quesid}" th:text="非常同意" th:value="e">
-                                        </label>
-									</td>
-									</tr>
-								</tbody>
-							</table>
-							<input type="submit" class="btn btn-default">
+								<div class="list-group">
+									<div th:each="ques,iterStat:${ques}">
+								<a class="list-group-item" >
+									<h5 th:text="|${iterStat.index+1}.${ques.quesname}|"></h5>
+								<label class="radio-inline">
+									<input type="radio" th:name="${ques.quesid}" th:text="完全不符合" th:value="a">
+								</label>
+									<label class="radio-inline">
+										<input type="radio" th:name="${ques.quesid}" th:text="偶尔符合" th:value="b">
+									</label>
+
+									<label class="radio-inline">
+										<input type="radio" th:name="${ques.quesid}" th:text="大致符合" th:value="c">
+									</label>
+
+									<label class="radio-inline">
+										<input type="radio" th:name="${ques.quesid}" th:text="符合" th:value="d">
+									</label>
+
+									<label class="radio-inline">
+										<input type="radio" th:name="${ques.quesid}" th:text="非常符合" th:value="e">
+									</label>
+								</a>
+									</div>
+								</div>
+								<center><input id="btnSubmit" type="submit" class="btn btn-default" onclick="return checkradio()"></center>
 						</form>
 						</div>
 					</div>
@@ -78,19 +72,24 @@
 	<!--footer-->
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
 	<script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
-	<script src="../bootstrap/js/wow.min.js"></script>
+	<script src="../bootstrap/js/function.js" ></script>
 	<script >
 		$(function() {
-			/*导航跳转效果插件
-			$('.nav').singlePageNav({
-			    offset:70
-			});*/
-			/*小屏幕导航点击关闭菜单*/
 			$('.navbar-collapse a').click(function() {
 				$('.navbar-collapse').collapse('hide');
 			});
-			new WOW().init();
 		})
+        function checkradio(){
+			var item = $(":radio:checked");
+			var len=item.length;
+			if(len<24){
+				alert("全部选择之后才可以提交哦～请重新检查"+$(":radio:checked").val());
+				return false;
+			}else {
+			    alert("提交成功嘻嘻嘻！")
+			}
+			return true;
+		}
 	</script>
 </body>
 </html>

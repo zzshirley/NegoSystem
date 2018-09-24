@@ -18,9 +18,12 @@ public class Question {
 	@Column(name = "id")
 	@GeneratedValue
 	private int id;
-	
+
+	//试题类别
+	private int classic;
+
 	//问题编号
-	@Column(name="quesid",unique = true)
+	@Column(name="quesid")
 	private int quesid;
 	
 	//问题名称
@@ -78,6 +81,14 @@ public class Question {
 
 	public void setPaperid(String paperid) {
 		this.paperid = paperid;
+	}
+
+	public int getClassic() {
+		return classic;
+	}
+
+	public void setClassic(int classic) {
+		this.classic = classic;
 	}
 
 	public String getRemark() {
