@@ -1,13 +1,11 @@
 package org.ccnu.nercel.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.ccnu.nercel.bean.DoQues;
 import org.ccnu.nercel.bean.Question;
 import org.ccnu.nercel.bean.User;
+import java.text.SimpleDateFormat;
 import org.ccnu.nercel.config.WebSecurityConfig;
 import org.ccnu.nercel.service.DoQuesService;
 import org.ccnu.nercel.service.QuesService;
@@ -57,11 +55,12 @@ public class QuesController {
 		}
 		String stuanswer=String.join(",",answer);
 
-		DoQues doques=new DoQues();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
+		DoQues doques=new DoQues();
 		doques.setStuid((String)userid);
 		doques.setStuanswer(stuanswer);
-
+		doques.setEndtime(df.format(System.currentTimeMillis()));
 		doQuesService.Doques(doques);
 		return "index";
 		
