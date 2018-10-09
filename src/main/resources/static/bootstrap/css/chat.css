@@ -1,0 +1,66 @@
+.question {
+
+}
+
+.answer {
+
+}
+
+.question {
+	height: 60px	
+}
+
+.message-l .list-group {
+	margin:55px;
+	vertical-align: middle;
+	color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1
+}
+
+.answer {
+	height: 60px;
+}
+
+.message-r span {
+	float: right;
+	margin: auto;
+	vertical-align: middle;
+	color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1
+}
+
+.confirm-btn {
+	background-color: #339900
+}
+
+.mark-red {
+	color: red
+}
+
+.profile-l {
+	float: left;
+	width: 60px;
+	height: 60px;
+}
+
+.profile-l img {
+	width: 50px;
+	height: 50px;
+}
+
+.profile-r {
+	float: right;
+	width: 60px;
+	height: 60px;
+}
+
+.profile-r img {
+	width: 50px;
+	height: 50px;
+}
+.list-group{
+	width: 150px;
+	height: 200px;
+}

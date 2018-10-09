@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
-    <title>协商</title>
-</head>
-<body>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>问卷调查</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet"
+          href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
+    <link rel="stylesheet" th:href="@{bootstrap/css/chat.css}" />
 
+</head>
+    <div th:replace="navbar"></div>
+    <!--协商-->
+    <div id="negotiate" th:action="@{/negotiate}">
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-info" >
+                <div class="panel-heading">协商</div>
+                <div class="panel-body" >
+                    <div class="alert alert-info" role="alert">
+                        <strong>亲爱的同学：</strong>
+                        填写须知：这份问卷源自于《SRL & MOOC》一文所采用的问卷，请你依据你自己在《数字化学习理论与研究》课程中阅读英文论文的情况进行填答。填写这份问卷不仅能让你更了解文章内容，也能够使你更了解自己的自我调节学习能力。问卷调查仅供学习与研究使用，请放心填写。
+                    </div>
+                    <div id="chat">
+                        <div class="question">
+                            <div class="profile-l"><img src="bootstrap/img/teacher.png"></div>
+                            <div class="message-l">
+                                <div class="list-group">
+                                    <li class="list-group-item"><a>查询测评结果</a></li>
+                                    <li class="list-group-item"><a>解释测评结果</a></li>
+                                    <li class="list-group-item"><a>重新测评</a></li>
+                                    <li class="list-group-item"><a>重新自评</a></li>
+                                    <li class="list-group-item"><a>浏览论文</a></li>
+                                    <li class="list-group-item"><a>查找资料</a></li>
+                                    <li class="list-group-item"><a>决定</a></li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div th:replace="footer"></div>
+    <script src="../bootstrap/js/chat.js" ></script>
 </body>
 </html>

@@ -44,7 +44,9 @@ public class QuesController {
 	}
 	
 	@PostMapping("/quessubmit")
-	public String quessubmit(@RequestParam Map req, HttpSession session) {
+	public String quessubmit(@RequestParam Map req, HttpSession session,Model model) {
+
+		int score;
 
 		Object userid;
 		userid=session.getAttribute(WebSecurityConfig.SESSION_KEY);
@@ -53,6 +55,8 @@ public class QuesController {
 			Object key = s.next();
 			answer.add(req.get(key));
 		}
+		score=score(answer);
+
 		String stuanswer=String.join(",",answer);
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -61,9 +65,35 @@ public class QuesController {
 		doques.setStuid((String)userid);
 		doques.setStuanswer(stuanswer);
 		doques.setEndtime(df.format(System.currentTimeMillis()));
+		doques.setStuscore(score);
 		doQuesService.Doques(doques);
+
 		return "index";
 		
+	}
+
+	public int score(List answer){
+		int score=0;
+		for(int i=0;i<answer.size();i++)
+		{
+			if(answer.get(i).equals("a")){
+				score=score+1;
+			}
+			if(answer.get(i).equals("b")){
+				score=score+2;
+			}
+			if(answer.get(i).equals("c")){
+				score=score+3;
+			}
+			if(answer.get(i).equals("d")){
+				score=score+4;
+			}
+			if(answer.get(i).equals("e")){
+				score=score+5;
+			}
+		}
+
+		return score;
 	}
 
 }

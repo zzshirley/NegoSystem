@@ -36,36 +36,33 @@ public class User {
     @NotEmpty(message="密码不能为空！")
     private String password;
     
-    //学生的性别
+    //学生的性别 0是女孩，1是男孩
     @Column(name = "gender")
     private String  gender;
 	
     @Column(name = "schoolid")
     private int schoolid;
-    
+
+    //专业 0-计算机应用技术，1-教育技术学，2-现代教育技术，3-软件工程，4-数据科学与大数据技术
     @Column(name = "major")
     private int major;
-	
+
+    //注册日期
     @Column(name = "regdate")
-    private Date regdate;
-    
-    //成绩
-    @Column(name = "scoreStr")
-    private String scoreStr;
-    
+    private String regdate;
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", stuid=" + stuid + ", stuname=" + stuname + ", password=" + password + ", gender="
-				+ gender + ", schoolid=" + schoolid + ", major=" + major + ", regdate=" + regdate + ", scoreStr="
-				+ scoreStr + "]";
-	}
-
-	public String getScoreStr() {
-		return scoreStr;
-	}
-
-	public void setScoreStr(String scoreStr) {
-		this.scoreStr = scoreStr;
+		return "User{" +
+				"id=" + id +
+				", stuid='" + stuid + '\'' +
+				", stuname='" + stuname + '\'' +
+				", password='" + password + '\'' +
+				", gender='" + gender + '\'' +
+				", schoolid=" + schoolid +
+				", major=" + major +
+				", regdate=" + regdate +
+				'}';
 	}
 
 	public int getId() {
@@ -125,11 +122,11 @@ public class User {
 		this.major = major;
 	}
 
-	public Date getRegdate() {
+	public String getRegdate() {
 		return regdate;
 	}
 
-	public void setRegdate(Date regdate) {
+	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
 }

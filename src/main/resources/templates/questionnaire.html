@@ -31,7 +31,7 @@
 						<div class="panel-body">
 							<div class="alert alert-info" role="alert">
 								<strong>填写须知：</strong>
-								“阅读能力测评系统”是由华中师范大学国家数字化学习工程技术研究中心所研发的软件，目的让你了解自己的阅读能力。为了让我们更加了解你在阅读时会用哪些方法与技巧，希望你能依据你自己阅读的情况进行填答。调查的结果只会给你和老师知道，并供研究使用，不会用作其他用途，请放心填写问卷。
+								填写须知：这份问卷源自于《SRL & MOOC》一文所采用的问卷，请你依据你自己在《数字化学习理论与研究》课程中阅读英文论文的情况进行填答。填写这份问卷不仅能让你更了解文章内容，也能够使你更了解自己的自我调节学习能力。问卷调查仅供学习与研究使用，请放心填写。
 							</div>
 							<form action="/quessubmit" method="post">
 								<div class="list-group">
@@ -59,7 +59,7 @@
 								</a>
 									</div>
 								</div>
-								<center><input id="btnSubmit" type="submit" class="btn btn-default" onclick="return checkradio()"></center>
+								<center><input type="submit" class="btn btn-default" onclick="return checkradio()"></center>
 						</form>
 						</div>
 					</div>
@@ -74,22 +74,23 @@
 	<script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
 	<script src="../bootstrap/js/function.js" ></script>
 	<script >
-		$(function() {
-			$('.navbar-collapse a').click(function() {
-				$('.navbar-collapse').collapse('hide');
-			});
-		})
+
+        $(function() {
+            $('.navbar-collapse a').click(function() {
+                $('.navbar-collapse').collapse('hide');
+            });
+        })
         function checkradio(){
-			var item = $(":radio:checked");
-			var len=item.length;
-			if(len<24){
-				alert("全部选择之后才可以提交哦～请重新检查"+$(":radio:checked").val());
-				return false;
-			}else {
-			    alert("提交成功嘻嘻嘻！")
-			}
-			return true;
-		}
+            var item = $(":radio:checked");
+            var len=item.length;
+            if(len<24){
+                alert("全部选择之后才可以提交哦～请重新检查"+$(":radio:checked").val());
+                return false;
+            }else {
+                alert("提交成功嘻嘻嘻！")
+            }
+            return true;
+        }
 	</script>
 </body>
 </html>

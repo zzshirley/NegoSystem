@@ -1,5 +1,7 @@
 package org.ccnu.nercel.bean;
 
+import org.springframework.stereotype.Controller;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,6 +40,10 @@ public class DoQues {
 	@Column(name = "stuanswer")
 	private String stuanswer;
 
+	//学生分数
+	@Column(name="stuscore")
+	private int stuscore;
+
 	public DoQues() {
 		
 	}
@@ -50,7 +56,8 @@ public class DoQues {
 				", begintime='" + begintime + '\'' +
 				", endtime='" + endtime + '\'' +
 				", stuid='" + stuid + '\'' +
-				", stuanswer=" + stuanswer +
+				", stuanswer='" + stuanswer + '\'' +
+				", stuscore='" + stuscore + '\'' +
 				'}';
 	}
 
@@ -100,5 +107,13 @@ public class DoQues {
 
 	public void setStuanswer(String stuanswer) {
 		this.stuanswer = stuanswer;
+	}
+
+	public int getStuscore() {
+		return stuscore;
+	}
+
+	public void setStuscore(int stuscore) {
+		this.stuscore = stuscore;
 	}
 }

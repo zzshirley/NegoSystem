@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8"/>
 		<meta http-equiv="X-UA-Compatible" content="text/html"/>
@@ -26,7 +25,7 @@
 							<div class="row">
 								<div class="col-md-5  wow fadeInLeft" style="background-color: dodgerblue;">
 									<div class="col-md-12 " id="right">
-										<img src="../bootstrap/img/read.png" class="img-responsive center-block" alt="php" />
+										<img src="../bootstrap/img/read.png" class="img-responsive center-block"  />
 										<h2>
                              				阅读测评系统
                                      </h2>
@@ -48,11 +47,15 @@
 										<div class="col-md-12">
 											<input type="submit"  class="form-control" value="提交"/>
 										</div>
+										<!--表单内操作-->
 										<div class="col-md-12">
-											 <div class="alert alert-danger" th:if="${loginError}" >
-                               					<strong >用户名或者用户密码不正确，请重新输入</strong>
-											 </div>
-                             			</div>
+											<div class="alert alert-danger" th:if="${loginError}" >
+												<strong >用户名或者用户密码不正确，请重新输入</strong>
+											</div>
+										</div>
+										<div class="col-md-8 col-md-offset-3">
+											<a href="#myModal" role="button" data-toggle="modal" data-target="#myModal">没有账号？请注册</a>
+										</div>
 									</form>
 								</div>
 							</div>
@@ -60,6 +63,53 @@
 					</div>
 				</div>
 				<!--contact-->
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">注册</h4>
+					</div>
+					<div class="modal-body" >
+						<form th:action="@{/loginregister}" method="post" id="form-register">
+							<label for="studentid">学号</label>
+							<input type="text" id="studentid" name="stuid" class="form-control" placeholder="学号" required
+								   data-bv-notempty-message="学号不能为空">
+
+							<label for="stupassword">密码</label>
+							<input type="password" id="stupassword" name="password" class="form-control" placeholder="请输入密码" required
+								   data-bv-notempty-message="密码不能为空">
+
+							<label for="stuname">姓名</label>
+							<input type="text" id="stuname" name="stuname" class="form-control" placeholder="姓名"required
+								   data-bv-notempty-message="姓名不能为空">
+
+							<label for="gender">性别</label>
+							<select id="gender" class="form-control" name="gender">
+								<option>男孩子</option>
+								<option>女孩子</option>
+							</select>
+
+							<label for="major">专业</label>
+							<select id="major" class="form-control" name="major">
+								<option>计算机应用技术</option>
+								<option>教育技术学</option>
+								<option>现代教育技术</option>
+								<option>软件工程</option>
+								<option>数据科学与大数据技术</option>
+							</select>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								<input type="submit" class="btn btn-primary">
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
