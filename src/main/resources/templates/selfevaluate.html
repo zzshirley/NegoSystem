@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>自我评价</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet"
+          href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
+</head>
+<body>
+    <div th:replace="navbar"></div>
+    <div class="row" th:action="@{/selfevaluate}" style="padding-top: 55px">
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-info" >
+                <div class="panel-heading">自我评价</div>
+                <div class="panel-body" >
+                    <div class="alert alert-info" role="alert">
+                        <strong>亲爱的同学：</strong>
+                        关于这一篇的阅读测试，你认为你能考几分？
+                    </div>
+                    <form class="form-group" th:action="@{/subself}" method="post">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <td>【理论理解】</td>
+                                <td>
+                                    <select id="selfeva1" class="form-control" name="abt1" >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>【研究方法】</td>
+                                <td>
+                                    <select id="selfeva2" class="form-control" name="abt2">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>【结果分析】</td>
+                                <td>
+                                    <select id="selfeva3" class="form-control" name="abt3">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <center><input type="submit" class="btn btn-default" ></center>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div th:replace="footer"></div>
+</body>
+</html>

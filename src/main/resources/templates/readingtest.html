@@ -9,6 +9,8 @@
 	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
+
+	<script src="../bootstrap/js/readingtest.js" ></script>
 </head>
 
 <body>
@@ -16,29 +18,24 @@
 	<div th:replace="navbar"></div>
 	<!--导航-->
 
-	<!--pdf显示-->
-	<div id="test" th:action="@{/readingtest}">
+	<div id="test">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-header">
 						<h1>阅读测试</h1>
 					</div>
-					<div class="alert alert-info" role="alert">
-						<strong>测试须知：</strong>
-						“阅读能力测评系统”是由华中师范大学国家数字化学习工程技术研究中心所研发的软件，目的让你了解自己的阅读能力。这次测评共有4篇文章，一共有30道题目。测评的结果只会给你和老师知道，并供研究使用，不会用作其他用途，请放心测评。”
+					<div class="col-md-10 col-md-offset-1">
+						<div class="alert alert-info" role="alert">
+							<strong>测试须知：</strong>
+							“阅读能力测评系统”是由华中师范大学国家数字化学习工程技术研究中心所研发的软件，目的让你了解自己的阅读能力。一共有15道题目。测评的结果只会给你和老师知道，并供研究使用，不会用作其他用途，请放心测评。”
+						</div>
 					</div>
 				</div>
 				<!--pdf显示-->
 
-				<div class="col-md-6">
-					<iframe th:src="@{bootstrap/pdf/2A-SRL.pdf}" id="iframeId"
-						style="width: 100%; height: 740px">
-						<a th:href="@{bootstrap/pdf/2A-SRL.pdf}">Download PDF</a>
-					</iframe>
-				</div>
 				<!--答题卡-->
-				<div class="col-md-6">
+				<div class="col-md-8 col-md-offset-2">
 					<div class="panel panel-info">
 						<div class="panel-heading">答题卡</div>
 						<div style="overflow: scroll; height: 700px; width: 100%;">
@@ -49,13 +46,13 @@
 											<h5 id="quesrl01" th:text="${papers.get(0)}"></h5>
 											<p id="opsrl01" th:text="${ques1opt.get(0).options}">
 											<div class="radio-inline">
-												<input  id="radio1" type="radio" th:name="${ques1opt.get(0).id}" th:value="a">正确<br />
+												<input type="radio" th:name="${ques1opt.get(0).id}" th:value="a">正确<br />
 											</div>
 											<div class="radio-inline">
-												<input id="radio2" type="radio" th:name="${ques1opt.get(0).id}" th:value="b">错误<br />
+												<input type="radio" th:name="${ques1opt.get(0).id}" th:value="b">错误<br />
 											</div>
 											<div class="radio-inline">
-												<input id="radio3"type="radio" th:name="${ques1opt.get(0).id}" th:value="c">不知道<br />
+												<input type="radio" th:name="${ques1opt.get(0).id}" th:value="c">不知道<br />
 											</div>
 											</p>
 										</a>
@@ -159,7 +156,7 @@
 										</a>
 										<a class="list-group-item"  id="list9">
 											<h5 id="quesrl09" th:text="${papers.get(1)}"></h5>
-											<p id="opsrl09" th:text="${ques3opt.get(3).options}">
+											<p id="opsrl09" th:text="${ques2opt.get(3).options}">
 											<div class="radio-inline">
 												<input type="radio" th:name="${ques2opt.get(3).id}" th:value="a">正确<br />
 											</div>
@@ -173,7 +170,7 @@
 										</a>
 										<a class="list-group-item"  id="list10">
 											<h5 id="quesrl010" th:text="${papers.get(1)}"></h5>
-											<p id="opsrl010" th:text="${ques1opt.get(4).options}">
+											<p id="opsrl010" th:text="${ques2opt.get(4).options}">
 											<div class="radio-inline">
 												<input type="radio" th:name="${ques2opt.get(4).id}" th:value="a">正确<br />
 											</div>
@@ -243,7 +240,7 @@
 										</a>
 										<a class="list-group-item"  id="list15">
 											<h5 id="quesrl015" th:text="${papers.get(2)}"></h5>
-											<p id="opsrl015" th:text="${ques1opt.get(4).options}">
+											<p id="opsrl015" th:text="${ques3opt.get(4).options}">
 											<div class="radio-inline">
 												<input type="radio" th:name="${ques3opt.get(4).id}" th:value="a">正确<br />
 											</div>
@@ -256,7 +253,7 @@
 											</p>
 										</a>
 										<ul class="pagination">
-											<li id="btn1"><a href="javascript:void(0);">1</a></li>
+											<li id="btn1" class="active"><a href="javascript:void(0);">1</a></li>
 											<li id="btn2"><a href="javascript:void(0);">2</a></li>
 											<li id="btn3"><a href="javascript:void(0);">3</a></li>
 											<li id="btn4"><a href="javascript:void(0);">4</a></li>
@@ -273,7 +270,7 @@
 											<li id="btn15"><a href="javascript:void(0);">15</a></li>
 										</ul>
 									</div>
-									<input type="submit" class="btn btn-default" style="float:right">
+									<input type="submit" class="btn btn-default" style="float:right" id="readid" onclick="return checkradio()">
 								</form>
 							</div>
 						</div>
@@ -292,153 +289,6 @@
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
 	<script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
 	<script src="../bootstrap/js/function.js" ></script>
-	<script th:inline="javascript">
-		var list=new Array();
-		list=["#list1","#list2","#list3","#list4","#list5","#list6","#list7","#list8","#list9","#list10","#list11","#list12","#list13","#list14","#list15"]
-        $(function() {
-			/*导航跳转效果插件
-			$('.nav').singlePageNav({
-			    offset:70
-			});*/
-			/*小屏幕导航点击关闭菜单*/
-			$('.navbar-collapse a').click(function() {
-				$('.navbar-collapse').collapse('hide');
-			});
-		})
-        $(function() {
-            for(var i=1;i<list.length;i++){
-                    $(list[i]).hide();
-            }
-            $("li").click(function () {
-                $(this).addClass("active").siblings().removeClass("active");
-            })
-        })
-        $(function(){
-            $("#btn1").click(function(){
-                $("#list1").show();
-                $("#btn1").active;
-                for(var i=1;i<list.length;i++){
-                        $(list[i]).hide();
-                }
-            })
-        })
-		$(function(){
-		    $("#btn2").click(function(){
-		        $("#list2").show();
-                $("#btn1").onactivate;
-		        for(var i=0;i<list.length;i++){
-		            if(list[i]!="#list2"){
-                        $(list[i]).hide();
-					}
-				}
-			})
-		})
-        $(function(){
-            $("#btn3").click(function(){
-                $("#list3").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list3"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-        })
-        $(function(){
-            $("#btn4").click(function(){
-                $("#list4").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list4"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn5").click(function(){
-                $("#list5").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list5"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn6").click(function(){
-                $("#list6").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list6"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn7").click(function(){
-                $("#list7").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list7"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn8").click(function(){
-                $("#list8").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list8"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn9").click(function(){
-                $("#list9").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list9"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn10").click(function(){
-                $("#list10").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list10"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn11").click(function(){
-                $("#list11").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list11"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn12").click(function(){
-                $("#list12").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list12"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn13").click(function(){
-                $("#list13").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list13"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn14").click(function(){
-                $("#list14").show();
-                for(var i=0;i<list.length;i++){
-                    if(list[i]!="#list14"){
-                        $(list[i]).hide();
-                    }
-                }
-            })
-            $("#btn15").click(function(){
-                $("#list15").show();
-                for(var i=0;i<list.length-1;i++){
-                        $(list[i]).hide();
-                }
-            })
-        })
-	</script>
+
 </body>
 </html>

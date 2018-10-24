@@ -16,4 +16,5 @@ import java.util.List;
 public interface ResultRepo extends CrudRepository<DoPaper,String> {
 
     List<DoPaper> findByStuid(String Stuid);
+    List<DoPaper> findByStuidAndAndPaperid(String stuid,String paperid);
 }

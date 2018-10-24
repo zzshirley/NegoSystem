@@ -25,10 +25,11 @@ public class PaperQuesOptService {
         return quesOptionList;
     }
 
-    public String judge(int id){
+    public List<PaperQuesOption> quesOptions(int id){
 
-        String opt =paperQuesOptRepo.findById(id);
+        List<PaperQuesOption> quesOptions=paperQuesOptRepo.findById(id);
 
-        return opt;
+        return quesOptions;
     }
+
 }

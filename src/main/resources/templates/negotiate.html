@@ -1,55 +1,61 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>问卷调查</title>
+    <title>协商</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet"
           href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
     <link rel="stylesheet" th:href="@{bootstrap/css/chat.css}" />
+    <link rel="stylesheet" th:href="@{bootstrap/css/logo.css}" />
 
 </head>
-    <div th:replace="navbar"></div>
+<body>
+    <ul class="navbar navbar-default navbar-fixed-top">
+    <a style="font-size: 20px" id="opt1">
+        1.查询测评结果</a>
+        <a style="font-size: 20px" id="opt2">2.解释测评结果</a>
+        <a style="font-size: 20px" id="opt3">3.重新测评</a>
+        <a style="font-size: 20px" id="opt4">4.重新自评</a>
+        <a style="font-size: 20px" id="opt5">5.回答同学问题</a>
+        <a style="font-size: 20px" id="opt6">6.提问</a>
+        <a style="font-size: 20px" id="opt7">7.决定</a>
+    </ul>
     <!--协商-->
-    <div id="negotiate" th:action="@{/negotiate}">
-    <div class="container">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-info" >
-                <div class="panel-heading">协商</div>
-                <div class="panel-body" >
-                    <div class="alert alert-info" role="alert">
-                        <strong>亲爱的同学：</strong>
-                        填写须知：这份问卷源自于《SRL & MOOC》一文所采用的问卷，请你依据你自己在《数字化学习理论与研究》课程中阅读英文论文的情况进行填答。填写这份问卷不仅能让你更了解文章内容，也能够使你更了解自己的自我调节学习能力。问卷调查仅供学习与研究使用，请放心填写。
+    <div id="negotiate" style="overflow:auto; height: 800px; padding-top: 5px "  >
+        <div class="container">
+            <div class="row">
+            <div class="col-md-8 col-md-offset-2 "style="padding-top: 62px;">
+                <div class="alert alert-info" role="alert">
+                        <strong>亲爱的同学：<span th:text="${stuid}"></span><br> </strong>
+                        针对<span id="times"th:text="${time}"></span>测试的<span id="ab" th:text="${ability}"></span>
+                        你的自评结果是"<span id="selfevaold" th:text="${self1}"></span>",系统对你的测评结果是"<span id="sysold" th:text="${sys}"></span>"
                     </div>
-                    <div id="chat">
-                        <div class="question">
-                            <div class="profile-l"><img src="bootstrap/img/teacher.png"></div>
-                            <div class="message-l">
-                                <div class="list-group">
-                                    <li class="list-group-item"><a>查询测评结果</a></li>
-                                    <li class="list-group-item"><a>解释测评结果</a></li>
-                                    <li class="list-group-item"><a>重新测评</a></li>
-                                    <li class="list-group-item"><a>重新自评</a></li>
-                                    <li class="list-group-item"><a>浏览论文</a></li>
-                                    <li class="list-group-item"><a>查找资料</a></li>
-                                    <li class="list-group-item"><a>决定</a></li>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                <div id="chat">
+
                 </div>
+            </div>
             </div>
         </div>
     </div>
-    </div>
     <div th:replace="footer"></div>
+
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
     <script src="../bootstrap/js/chat.js" ></script>
+    <script>
+    $(function() {
+        /*小屏幕导航点击关闭菜单*/
+        $('.navbar-collapse a').click(function() {
+            $('.navbar-collapse').collapse('hide');
+        });
+    })
+    </script>
 </body>
 </html>

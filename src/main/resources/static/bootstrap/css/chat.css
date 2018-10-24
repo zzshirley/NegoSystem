@@ -2,24 +2,15 @@
 
 }
 
-.answer {
-
-}
-
-.question {
-	height: 60px	
-}
-
-.message-l .list-group {
-	margin:55px;
+.message-l .form-group {
+	margin:80px;
 	vertical-align: middle;
 	color: #31708f;
     background-color: #d9edf7;
-    border-color: #bce8f1
 }
 
 .answer {
-	height: 60px;
+
 }
 
 .message-r span {
@@ -59,8 +50,4 @@
 .profile-r img {
 	width: 50px;
 	height: 50px;
-}
-.list-group{
-	width: 150px;
-	height: 200px;
 }

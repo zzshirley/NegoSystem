@@ -39,6 +39,18 @@ public class DoPaper {
 	@Column(name = "score")
 	private int score;
 
+	//能力a
+	@Column(name="scorea")
+	private int scorea;
+
+	//能力b
+	@Column(name="scoreb")
+	private int scoreb;
+
+	//能力c
+	@Column(name="scorec")
+	private int scorec;
+
 	// 试卷状态
 	@Column(name = "paperstate")
 	private String paperstate;
@@ -47,12 +59,17 @@ public class DoPaper {
 	@Column(name = "paperanswer")
 	private String paperanswer;
 
+	//题目listid
+	@Column(name="queslist")
+	private String queslist;
+
+
 	public DoPaper() {
 
 	}
 	
 	public DoPaper(int id,String paperid,String stuid,String begintime,
-			String endtime,int score,String paperstate,String paperanswer) {
+			String endtime,int score,int scorea,int scoreb,int scorec,String paperstate,String paperanswer,String queslist) {
 		super();
 		this.id=id;
 		this.paperid=paperid;
@@ -60,22 +77,54 @@ public class DoPaper {
 		this.begintime=begintime;
 		this.endtime=endtime;
 		this.score=score;
+		this.scorea=scorea;
+		this.scoreb=scoreb;
+		this.scorec=scorec;
 		this.paperstate=paperstate;
 		this.paperanswer=paperanswer;
+		this.queslist=queslist;
 	}
 
 	@Override
 	public String toString() {
 		return "DoPaper{" +
 				"id=" + id +
-				", paperid=" + paperid +
+				", paperid='" + paperid + '\'' +
 				", stuid='" + stuid + '\'' +
 				", begintime='" + begintime + '\'' +
 				", endtime='" + endtime + '\'' +
-				", score='" + score + '\'' +
+				", score=" + score +
+				", scorea=" + scorea +
+				", scoreb=" + scoreb +
+				", scorec=" + scorec +
 				", paperstate='" + paperstate + '\'' +
 				", paperanswer='" + paperanswer + '\'' +
+				", queslist='" + queslist + '\'' +
 				'}';
+	}
+
+	public int getScorea() {
+		return scorea;
+	}
+
+	public void setScorea(int scorea) {
+		this.scorea = scorea;
+	}
+
+	public int getScoreb() {
+		return scoreb;
+	}
+
+	public void setScoreb(int scoreb) {
+		this.scoreb = scoreb;
+	}
+
+	public int getScorec() {
+		return scorec;
+	}
+
+	public void setScorec(int scorec) {
+		this.scorec = scorec;
 	}
 
 	public String getStuid() {
@@ -140,5 +189,13 @@ public class DoPaper {
 
 	public void setPaperanswer(String paperanswer) {
 		this.paperanswer = paperanswer;
+	}
+
+	public String getQueslist() {
+		return queslist;
+	}
+
+	public void setQueslist(String queslist) {
+		this.queslist = queslist;
 	}
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="text/html" />
+    <title>阅读测试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no" />
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
+
+    <script src="../bootstrap/js/readingtest.js" ></script>
+    <script src="../bootstrap/js/testindex.js" ></script>
+</head>
+<body>
+
+    <!--导航-->
+    <div th:replace="navbar"></div>
+    <!--导航-->
+    <div class="container">
+        <div class="row">
+            <div class="page-header" style="padding-top: 5px">
+                <h3 th:text="阅读测试"></h3>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">测试</div>
+                    <div class="panel-body" >
+                        <table class="table table-hover" >
+                            <thead>
+                            <tr>
+                                <th>日期</th>
+                                <th>文章</th>
+                                <th>自我评价</th>
+                                <th>阅读测试</th>
+                                <th>测试结果</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>2018-10-24</td>
+                                <td>SRL&blended learning</td>
+                                <td><a th:href="@{/selfevaluate?times=3}">自我评价</a></td>
+                                <td><a th:href="@{/readingtest?times=3}">阅读测试</a></td>
+                                <td><a th:href="@{/result?times=3}">查看</a></td>
+                            </tr>
+                            <tr>
+                                <td>2018-10-17</td>
+                                <td>SRL&flipped classrooms</td>
+                                <td><a th:href="@{/selfevaluate?times=2}">自我评价</a></td>
+                                <td><a th:href="@{/readingtest?times=2}">阅读测试</a></td>
+                                <td><a th:href="@{/result?times=2}">查看</a></td>
+                            </tr>
+                            <tr>
+                                <td>2018-10-10</td>
+                                <td>SRL&MOOC</td>
+                                <td><a th:href="@{/selfevaluate?times=1}">自我评价</a></td>
+                                <td><a th:href="@{/readingtest?times=1}">阅读测试</a></td>
+                                <td><a th:href="@{/result?times=1}">查看</a></td>
+                            </tr>
+                            <div class="col-md-12" id="alertself">
+                                <div class="alert alert-danger" th:if="${selfevaError}" >
+                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                    <strong>不能重复进行自我测评哦</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="alerttest">
+                                <div class="alert alert-danger" th:if="${testError}" >
+                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                    <strong>不能重复进行测试哦</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="alertselfirst">
+                                <div class="alert alert-warning" th:if="${selfirst}" >
+                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                    <strong>请先进行自我测评</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="nocheck">
+                                <div class="alert alert-warning" th:if="${checkError}" >
+                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                    <strong>完成自我测评和阅读测试之后才可以查看哦</strong>
+                                </div>
+                            </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div th:replace="footer::footer"></div>
+
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
+    <script src="../bootstrap/js/function.js" ></script>
+    <script>
+        $(function(){
+            $(".close").click(function(){
+                $("#nocheck").alert('close');
+                $("#alertself").alert('close');
+                $("#alertselfirst").alert('close');
+                $("#alerttest").alert('close');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -21,6 +21,8 @@ spring:
     prefix: classpath:/templates/
     encoding: UTF-8
     content-type: text/html
-    mode : HTML5     
+    mode : HTML5
+  logging:
+    config: classpath:log4j2.yml
       
     

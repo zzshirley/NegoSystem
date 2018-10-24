@@ -17,5 +17,6 @@ public interface PaperQuesOptRepo extends CrudRepository<PaperQuesOption,String>
 
     List<PaperQuesOption> findByQuestionAndIstrueoption(String question,String istrueoption);
 
-    String findById(int id);
+    List<PaperQuesOption> findById(int id);
+
 }

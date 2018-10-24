@@ -10,7 +10,6 @@
     <link rel="stylesheet"
           href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" th:href="@{bootstrap/css/bootstrap-maizi.css}"/>
     <link rel="stylesheet" th:href="@{bootstrap/css/ques.css}" />
 
@@ -21,37 +20,68 @@
 <!--测试记录-->
 <div class="container">
     <div class="row">
-        <div class="alert alert-info" role="alert">
-            欢迎你
+        <div class="page-header" style="padding-top: 55px">
+            <h1 th:text="${date}"></h1>
         </div>
-        <div class="col-md-6">
+        <div class="alert alert-info" role="alert">
+            好好学习 天天向上👏
+        </div>
+        <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">历史测试</div>
-                <div class="panel-body" th:action="result">
+                <div class="panel-heading">查看测试</div>
+                <div class="panel-body" >
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>文章</th>
-                            <th>时间</th>
-                            <th>成绩</th>
+                            <th>能力</th>
+                            <th>测评成绩</th>
+                            <th>自我评价</th>
+                            <th>高估/低估</th>
+                            <th>查询与补救</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="resultList:${resultList}">
-                            <td th:text="${resultList.paperid}"></td>
-                            <td th:text="${resultList.endtime}"></td>
-                            <td th:text="${resultList.score}"></td>
+                        <tr >
+                            <td id="abt1">【理论理解】</td>
+                            <td th:text="${sysscorea}"></td>
+                            <td th:text="${selfscorea}"></td>
+                            <td th:text="${underorovera}"></td>
+                            <td>
+                                <div th:switch="${underorovera}">
+                                    <p th:case="'一致'">评估一致，无需补救</p>
+                                    <!-- *: case的默认的选项 -->
+                                    <p th:case="*"><a th:href="@{'/negotiate?ab=1&time='+${date}+'&selfeva='+${selfscorea}+'&syseva='+${sysscorea}}">查询与补救</a></p>
+                                </div>
+                            </td>
                          </tr>
+                        <tr >
+                            <td>【研究方法】</td>
+                            <td th:text="${sysscoreb}"></td>
+                            <td th:text="${selfscoreb}"></td>
+                            <td th:text="${underoroverb}"></td>
+                            <td>
+                                <div th:switch="${underoroverb}">
+                                    <p th:case="'一致'">评估一致，无需补救</p>
+                                    <!-- *: case的默认的选项 -->
+                                    <p th:case="*"><a th:href="@{'/negotiate?ab=2&time='+${date}+'&selfeva='+${selfscoreb}+'&syseva='+${sysscoreb}}">查询与补救</a></p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>【结果分析】</td>
+                            <td th:text="${sysscorec}"></td>
+                            <td th:text="${selfscorec}"></td>
+                            <td th:text="${underoroverc}"></td>
+                            <td>
+                                <div th:switch="${underoroverc}">
+                                    <p th:case="'一致'">评估一致，无需补救</p>
+                                    <!-- *: case的默认的选项 -->
+                                    <p th:case="*"><a th:href="@{'/negotiate?ab=3&time='+${date}+'&selfeva='+${selfscorec}+'&syseva='+${sysscorec}}">查询与补救</a></p>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">今日访客统计</div>
-                <div class="panel-body">
-                    <canvas id="canvas" class="col-md-12"></canvas>
                 </div>
             </div>
         </div>
@@ -63,8 +93,7 @@
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../bootstrap/js/jquery.singlePageNav.min.js"></script>
     <script src="../bootstrap/js/function.js" ></script>
-    <script src="../bootstrap/js/Chart.js"></script>
-    <script src="../bootstrap/js/script.js"></script>
+    <script src="../bootstrap/js/result.js" ></script>
     <script >
         $(function() {
             $('.navbar-collapse a').click(function() {

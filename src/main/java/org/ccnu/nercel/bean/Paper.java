@@ -43,22 +43,24 @@ public class Paper {
 	//试卷名称
 	@Column(name="papername")
 	private String papername;
-	
+
+	//试卷日期
+	@Column(name="date")
+	private String date;
+
 
 	public Paper() {
 		
 	}
-	
-	public Paper(int id,String paperid,int themeid,
-			String questiona,String questionb,String questionc,String papername) {
-		super();
-		this.id=id;
-		this.paperid=paperid;
-		this.themeid=themeid;
-		this.questiona=questiona;
-		this.questionb=questionb;
-		this.questionc=questionc;
-		this.papername=papername;
+
+	public Paper(String paperid, int themeid, String questiona, String questionb, String questionc, String papername, String date) {
+		this.paperid = paperid;
+		this.themeid = themeid;
+		this.questiona = questiona;
+		this.questionb = questionb;
+		this.questionc = questionc;
+		this.papername = papername;
+		this.date = date;
 	}
 
 	public int getId() {
@@ -117,16 +119,25 @@ public class Paper {
 		this.papername = papername;
 	}
 
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	@Override
 	public String toString() {
 		return "Paper{" +
 				"id=" + id +
-				", paperid=" + paperid +
+				", paperid='" + paperid + '\'' +
 				", themeid=" + themeid +
-				", questiona=" + questiona +
-				", questionb=" + questionb +
-				", questionc=" + questionc +
+				", questiona='" + questiona + '\'' +
+				", questionb='" + questionb + '\'' +
+				", questionc='" + questionc + '\'' +
 				", papername='" + papername + '\'' +
+				", date='" + date + '\'' +
 				'}';
 	}
 }

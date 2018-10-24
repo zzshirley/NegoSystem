@@ -36,6 +36,10 @@ public class paperQues {
     @Column(name="quescontent")
     private String quescontent;
 
+    //选择几个正确答案
+    @Column(name="rdm")
+    private int rdm;
+
     public int getId() {
         return id;
     }
@@ -76,6 +80,14 @@ public class paperQues {
         this.quescontent = quescontent;
     }
 
+    public int getRdm() {
+        return rdm;
+    }
+
+    public void setRdm(int rdm) {
+        this.rdm = rdm;
+    }
+
     @Override
     public String toString() {
         return "paperQues{" +
@@ -84,6 +96,7 @@ public class paperQues {
                 ", quesclass='" + quesclass + '\'' +
                 ", question='" + question + '\'' +
                 ", quescontent='" + quescontent + '\'' +
+                ", rdm=" + rdm +
                 '}';
     }
 }
