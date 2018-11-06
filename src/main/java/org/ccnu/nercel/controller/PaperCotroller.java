@@ -94,13 +94,7 @@ public class PaperCotroller {
         Paper paper = new Paper();
 
         time=times;
-        if(times.equals("3")){
-            paperid="srl04";
-        }else if(times.equals("2")){
-            paperid="srl03";
-        }else if(times.equals("1")){
-            paperid="srl02";
-        }
+        paperid=TimetoPaperid(times);
         paper.setPaperid(paperid);
 
         List<Selfeva> selfevaList=selfevaService.getSelfEvaBytime((String)userid,times);
@@ -212,7 +206,7 @@ public class PaperCotroller {
 
         List answer=new ArrayList();//学生选择答案转换成字符串
 
-        Logger logdopaper = LogUtils.getBussinessLogger();
+        Logger logdopaper = LogUtils.getDBLogger();
 
         List queslist=new ArrayList();
         for(Iterator s=req.keySet().iterator();s.hasNext();){
@@ -276,9 +270,9 @@ public class PaperCotroller {
         dopaperservice.saveStuAnswer(doPaper);
 
 
-        logdopaper.info(userid+"/"+doPaper.getPaperid()+"/"+answer+"/"+score+"/"+queslist);
+        logdopaper.info("提交测试"+userid+"/"+doPaper.getPaperid()+"/"+answer+"/"+score+"/"+queslist);
 
-        ModelAndView mv = new ModelAndView("testindex");
+        ModelAndView mv = new ModelAndView("/testindex");
 
         return mv;
 
@@ -290,14 +284,7 @@ public class PaperCotroller {
         userid = session.getAttribute(WebSecurityConfig.SESSION_KEY);//用户id
 
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        String paperid=transPaperid(param.get("paperid"));
         String ab=param.get("ability");
 
         int i=abToint(ab);//0表示理论能力；1表示应用能力；2表示分析能力
@@ -346,13 +333,7 @@ public class PaperCotroller {
         Nego nego=new Nego();
 
         String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        paperid=transPaperid(param.get("paperid"));
 
         List<String> negoanswer = java.util.Arrays.asList(param.get("btntext").split(","));
 
@@ -418,7 +399,7 @@ public class PaperCotroller {
 
         String value=param.get("btnvalue");
 
-        log1.info(userid+"/"+id+"/"+value);
+        log1.info(userid+" "+id+" "+value);
 
     }
    //能力值转换
@@ -476,10 +457,53 @@ public class PaperCotroller {
         return i;
     }
 
-    public String ablity(int scorea){
-        String abt1="";
-        String  abt=evaluate(scorea,abt1);
-        return abt;
+    public String TimetoPaperid(String times){
+        String paperid=null;
+        if(times.equals("3")){
+            paperid="srl04";
+        }else if(times.equals("2")){
+            paperid="srl03";
+        }else if(times.equals("1")){
+            paperid="srl02";
+        }else if(times.equals("4")){
+            paperid="srl05";
+        }else if(times.equals("5")){
+            paperid="srl06";
+        }else if(times.equals("6")){
+            paperid="srl07";
+        }else if(times.equals("7")){
+            paperid="srl08";
+        }else if(times.equals("8")){
+            paperid="srl09";
+        }else if(times.equals("9")){
+            paperid="srl10";
+        }
+        return paperid;
+    }
+
+    public String transPaperid(String s){
+
+        String paperid=null;
+        if(s.equals("2018-10-10 SRL")){
+            paperid="srl02";
+        }else if(s.equals("2018-10-17 SRL")){
+            paperid="srl03";
+        }else if(s.equals("2018-10-24 SRL")){
+            paperid="srl04";
+        }else if(s.equals("2018-11-7 SRL")){
+            paperid="srl05";
+        }else if(s.equals("2018-11-14 SRL")){
+            paperid="srl06";
+        }else if(s.equals("2018-11-21 SRL")){
+            paperid="srl07";
+        }else if(s.equals("2018-12-12 SRL")){
+            paperid="srl08";
+        }else if(s.equals("2018-12-19 SRL")){
+            paperid="srl09";
+        }else if(s.equals("2018-12-26 SRL")){
+            paperid="srl10";
+        }
+        return paperid;
     }
     public String evaluate(float score,String abt){
         if(score>=8&&score<=10){

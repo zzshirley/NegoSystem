@@ -30,8 +30,14 @@
 	<dependencies>
 		<!--Spring Boot的核心启动器，包含了自动配置、日志和YAML-->
 	    <dependency>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-starter</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion><!-- 去除默认配置 -->
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
         </dependency>
         <!--数据库访问，支持JPA（Java Persistence API），包括spring-data-jpa、spring-orm、Hibernate-->
 		<dependency>
@@ -64,7 +70,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -72,9 +77,25 @@
 		</dependency>
 		 <!--支持Thymeleaf模板引擎，包括与Spring的集成-->
 		<dependency>
-		 <groupId>org.springframework.boot</groupId>
+		 	<groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-thymeleaf</artifactId>
     		</dependency>
+    		<!-- 配置gson -->
+		<dependency>
+        	<groupId>com.google.code.gson</groupId>
+        	<artifactId>gson</artifactId>
+        	<version>2.2.4</version>
+   		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+			<version>1.5.6.RELEASE</version>
+		</dependency>
+		<dependency>  <!-- 支持识别yml配置 -->
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
     		
     		<!--用来热部署-->
         <dependency>
@@ -82,19 +103,25 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-        
-       	<dependency>  
+
+		<dependency>
            <groupId>com.fasterxml.jackson.core</groupId>  
-                <artifactId>jackson-core</artifactId>  
-                </dependency>  
-            <dependency>  
-                <groupId>com.fasterxml.jackson.core</groupId>  
-                <artifactId>jackson-databind</artifactId>  
-                </dependency>  
-            <dependency>  
-                <groupId>com.fasterxml.jackson.core</groupId>  
-                <artifactId>jackson-annotations</artifactId>  
-                </dependency>   
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

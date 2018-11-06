@@ -87,14 +87,7 @@ public class NegotiateController {
         int i=abToint(param.get("ability"));
         Logger logaskexp = LogUtils.getBussinessLogger();
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        String paperid=transPaperid(param.get("paperid"));
 
         List<DoPaper> resultList = resultService.getpaperAndpaperid((String)userid,paperid);
 
@@ -193,14 +186,7 @@ public class NegotiateController {
         Logger logexp= LogUtils.getBussinessLogger();
         Nego nego=new Nego();
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        String paperid=transPaperid(param.get("paperid"));
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -218,7 +204,7 @@ public class NegotiateController {
 
         negoService.insertNego(nego);
 
-        logexp.info("stuid"+userid+"/"+"ab:"+param.get("ab")+"/"+param.get("btnoption")+"/"+param.get("btntext"));
+        logexp.info("学生提交测试理由"+"/"+"stuid"+userid+"/"+"ab:"+param.get("ab")+"/"+param.get("btnoption")+"/"+param.get("btntext"));
 
         return "ok";
     }
@@ -231,14 +217,7 @@ public class NegotiateController {
         Nego nego=new Nego();
         Logger logretest= LogUtils.getBussinessLogger();
 
-        String paperid=null;
-        if(param.get("paperid").equals("10/10")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("10/17")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        String paperid=transPaperid(param.get("paperid"));
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -251,7 +230,7 @@ public class NegotiateController {
         nego.setEndtime(df.format(System.currentTimeMillis()));
         System.out.println("学生的自我评价："+param.get("selfeva"));//ok
 
-        logretest.info("stuid"+userid+"/"+"ab:"+param.get("ab")+"/"+param.get("selfeva"));
+        logretest.info("学生重新自我测评"+"stuid"+userid+"/"+"ab:"+param.get("ab")+"/"+param.get("selfeva"));
 
         negoService.insertNego(nego);
 
@@ -266,14 +245,8 @@ public class NegotiateController {
         Logger log0 = LogUtils.getBussinessLogger();
         Nego nego=new Nego();
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+
+        String paperid=transPaperid(param.get("paperid"));
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -281,7 +254,7 @@ public class NegotiateController {
         nego.setPaperid(paperid);
         nego.setAbility(abToString(param.get("ability")));
         nego.setNegopt("7");
-        nego.setMarka("学生同意");
+        nego.setMarka("学生选择");
         nego.setMarkb(param.get("isagree"));
         nego.setEndtime(df.format(System.currentTimeMillis()));
         System.out.println("学生的选择是："+param.get("isagree"));//ok
@@ -301,28 +274,19 @@ public class NegotiateController {
         Logger log0 = LogUtils.getBussinessLogger();
         Nego nego=new Nego();
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
-
+        String paperid=transPaperid(param.get("paperid"));
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
         nego.setStuid((String)userid);
         nego.setPaperid(paperid);
         nego.setAbility(abToString(param.get("ability")));
         nego.setNegopt("7");
         nego.setMarkb(param.get("isagree"));
-        nego.setMarka("学生不同意");
+        nego.setMarka("学生折衷");
+        nego.setMarkc(param.get("sc"));
         nego.setEndtime(df.format(System.currentTimeMillis()));
         System.out.println("学生的选择是："+param.get("isagree"));//ok
 
-        log0.info("做决定"+"stuid"+userid+"/"+"ab:"+param.get("ability")+"/"+param.get("isagree"));
-
+        log0.info("做决定-折衷决定"+"stuid"+userid+"/"+"ab:"+param.get("ability")+"/"+param.get("isagree"));
         negoService.insertNego(nego);
 
     }
@@ -335,14 +299,7 @@ public class NegotiateController {
         Logger log0 = LogUtils.getBussinessLogger();
         Nego nego=new Nego();
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        String paperid=transPaperid(param.get("paperid"));
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -350,7 +307,6 @@ public class NegotiateController {
         nego.setPaperid(paperid);
         nego.setAbility(abToString(param.get("ability")));
         nego.setNegopt("7");
-        nego.setMarkb(param.get("isagree"));
         nego.setMarka("学生选择折衷");
         nego.setEndtime(df.format(System.currentTimeMillis()));
         System.out.println("学生的选择是："+param.get("isagree"));//ok
@@ -358,7 +314,7 @@ public class NegotiateController {
         log0.info("做决定-学生选择折衷"+"stuid"+userid+"/"+"ab:"+param.get("ability")+"/"+param.get("isagree"));
 
         negoService.insertNego(nego);
-        double cor=compare(param.get("selfeva0"),param.get("score0"));
+        double cor=compare(param.get("self"),param.get("score"));
         return cor;
     }
     //回答学生提问
@@ -370,14 +326,8 @@ public class NegotiateController {
         Nego nego=new Nego();
         Logger logaskstu = LogUtils.getBussinessLogger();
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        String paperid=transPaperid(param.get("paperid"));
+
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         nego.setStuid((String)userid);
         nego.setPaperid(paperid);
@@ -402,14 +352,8 @@ public class NegotiateController {
         Nego nego=new Nego();
         Logger logaskstu = LogUtils.getBussinessLogger();
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        String paperid=transPaperid(param.get("paperid"));
+
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         nego.setStuid((String)userid);
         nego.setPaperid(paperid);
@@ -433,14 +377,8 @@ public class NegotiateController {
         Nego nego=new Nego();
         Logger logaskque = LogUtils.getBussinessLogger();
 
-        String paperid=null;
-        if(param.get("paperid").equals("2018-10-10 SRL")){
-            paperid="srl02";
-        }else if(param.get("paperid").equals("2018-10-17 SRL")){
-            paperid="srl03";
-        }else if(param.get("paperid").equals("2018-10-24 SRL")){
-            paperid="srl04";
-        }
+        String paperid=transPaperid(param.get("paperid"));
+
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         nego.setStuid((String)userid);
         nego.setPaperid(paperid);
@@ -451,7 +389,7 @@ public class NegotiateController {
         nego.setEndtime(df.format(System.currentTimeMillis()));
         negoService.insertNego(nego);
 
-        logaskque.info("学生的提问"+"stuid"+userid+"/"+param.get("ab")+"/"+paperid+"/"+"学生回答内容："+param.get("stuawr"));
+        logaskque.info("学生的提问"+"stuid"+userid+"/"+param.get("ab")+"/"+paperid+"/"+"学生回答内容："+param.get("stuques"));
 
     }
     public String abToString(String ab){
@@ -556,16 +494,41 @@ public class NegotiateController {
         if(Math.abs(selfeva-syseva)==1||Math.abs(selfeva-syseva)==0){
             eva=0;
         }else if((selfeva-syseva==2||(selfeva-syseva==3))){
-            eva=syseva+Math.ceil(selfeva-syseva);
+            eva=syseva+Math.ceil((selfeva-syseva)/2);
         }else if(selfeva-syseva>3){
-            eva=syseva+Math.ceil(selfeva-syseva);
+            eva=syseva+Math.ceil((selfeva-syseva)/2);
         }else if((syseva-selfeva==2||(syseva-selfeva==3))){
-            eva=selfeva +Math.ceil(selfeva-syseva);
+            eva=selfeva +Math.ceil((syseva-selfeva)/2);
         }else if(syseva-selfeva>3){
-            eva=selfeva +Math.ceil(selfeva-syseva);
+            eva=selfeva +Math.ceil((syseva-selfeva)/2);
         }
 
         return eva;
+    }
+    //获取到当前的文章id
+    public String transPaperid(String s){
+
+        String paperid=null;
+        if(s.equals("2018-10-10 SRL")){
+            paperid="srl02";
+        }else if(s.equals("2018-10-17 SRL")){
+            paperid="srl03";
+        }else if(s.equals("2018-10-24 SRL")){
+            paperid="srl04";
+        }else if(s.equals("2018-11-7 SRL")){
+            paperid="srl05";
+        }else if(s.equals("2018-11-14 SRL")){
+            paperid="srl06";
+        }else if(s.equals("2018-11-21 SRL")){
+            paperid="srl07";
+        }else if(s.equals("2018-12-12 SRL")){
+            paperid="srl08";
+        }else if(s.equals("2018-12-19 SRL")){
+            paperid="srl09";
+        }else if(s.equals("2018-12-26 SRL")){
+            paperid="srl10";
+        }
+        return paperid;
     }
 }
 

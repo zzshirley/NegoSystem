@@ -1,8 +1,12 @@
-score0=null;
-selfeva0=null;
-var abt;
+var score0=$("#sysold").text();
+var selfeva0=$("#selfevaold").text();
 var ab= $("#ab").text();
 var times=$("#times").text();
+var agr=0;
+var disagr=1;
+var comagree=00;
+var comdisagree=01;
+var comscore=0;
 console.log(ab,times)
 $(function(){
     $("#opt1").bind('click', function() {
@@ -207,7 +211,7 @@ function quesstu(){
 }
 function stuQues(){
     tpl = '<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div>' +
-        '<div class="message-l"><div class="form-group" ><div class="list-group-item" ><p>请说</p>' +
+        '<div class="message-l"><div class="form-group" ><div class="list-group-item" ><p>你的问题将会反馈给老师</p>' +
         '<input type="text" name="stuques" id="stuques" class="form-control"  placeholder="你的问题" required data-bv-notempty-message="解释原因不为空">' +
         '<center><input type="submit" class="btn btn-default" id="stuquesbtn" onclick="stuques()"></center>' +
         '</div></div></div></div></div>';
@@ -223,7 +227,7 @@ function stuques() {
 }
 //7.做决定
 function decision(score0,selfeva0) {
-    tpl = '<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><div class="form-group" ><div class="list-group-item" ><span>现在系统对你的评价是**{msg}**,</span><span>你的自我评价是**{msg1}**</span><span>你是否同意这个结果</span><p><li><a id="agree" onclick="agree0()">我同意测评结果是正确的。</a></li><li><a id="disagree" onclick="disagree0()">我不同意测评结果</a></li><li><a id="abc">我想要提议折衷。</a></li></p></div></div></div></div>';
+    tpl = '<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><div class="form-group" ><div class="list-group-item" ><span>现在系统对你的评价是**{msg}**,</span><span>你的自我评价是**{msg1}**</span><span>你是否同意这个结果</span><p><li><a id="agree" onclick="agree0(agr)">我同意测评结果是正确的。</a></li><li><a id="disagree" onclick="agree0(disagr)">我不同意测评结果</a></li><li><a id="abc" onclick="com()">我想要提议折衷。</a></li></p></div></div></div></div>';
     if(score0!=null&&selfeva0==null){
         selfeva0=$("#selfevaold").text();
         result = parse(tpl,score0);
@@ -235,30 +239,39 @@ function decision(score0,selfeva0) {
         $("#chat").append(result0);
     }else if(score0==null&&selfeva0!=null){
         score0=$("#sysold").text();
-        result = parse(tpl,selfeva0);
+        result = parse(tpl,score0);
         result0= parse0(result,selfeva0);
         $("#chat").append(result0);
     }else{
         score0=$("#sysold").text();
         selfeva0=$("#selfevaold").text();
-        result = parse(tpl,abtold);
-        result0= parse0(result,selfold);
+        result = parse(tpl,score0);
+        result0= parse0(result,selfeva0);
         $("#chat").append(result0);
     }
     var div = document.getElementById("negotiate");
     div.scrollTop = div.scrollHeight;
 }
-function agree0() {
-    agree(ab,times);
+function compro(data) {
+    comscore=data;
+    tpl='<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><div class="form-group"><div class="list-group-item" ><h5>你的测评结果将更改为{msg}</h5><li><a onclick="disagree0(comagree)">我同意</a></li><li><a onclick="disagree0(comdisagree)">我不同意</a></li></p></div></div></div>';
+    result = parse(tpl,data);
+    $("#chat").append(result);
+    var div = document.getElementById("negotiate");
+    div.scrollTop = div.scrollHeight;
+}
+function agree0(yon) {
+    agree(ab,times,yon);
     endnego();
 }
-function disagree0() {
-    disagree(ab,times);
+function disagree0(yon) {
+    disagree(ab,times,yon,comscore);
     endnego();
 }
 //折衷
 function com() {
-    comp(ab,times,score0,selfeva0);
+    console.log(ab,times,score0,selfeva0);
+    comp(ab,times);
 }
 //1.查询成绩
 function addStuMsg(ab,times) {
@@ -393,13 +406,13 @@ function poststuques(stuques,ab,times) {
     });
 }
 //7.做决定（同意）
-function agree(ab,times) {
+function agree(ab,times,yon) {
     $.ajax({
         url: '/negoagree',
         data: {
             ability: ab,
             paperid:times,
-            isagree:1
+            isagree:yon
         },
         dataType: 'json',
         type: 'post',
@@ -409,13 +422,14 @@ function agree(ab,times) {
     });
 }
 //7.做决定（不同意）
-function disagree(ab,times) {
+function disagree(ab,times,yon,s) {
     $.ajax({
         url: '/negodisagree',
         data: {
             ability: ab,
             paperid:times,
-            isagree:0
+            isagree:yon,
+            sc:s
         },
         dataType: 'json',
         type: 'post',
@@ -425,7 +439,7 @@ function disagree(ab,times) {
     });
 }
 //7.做决定（折衷）
-function comp(ab,times,score0,selfeva0) {
+function comp(ab,times) {
     $.ajax({
         url: '/compromise',
         data: {
@@ -438,7 +452,8 @@ function comp(ab,times,score0,selfeva0) {
         dataType: 'json',
         type: 'post',
         success: function(data) {
-            console.log(data);
+            console.log("分数差为："+data);
+            compro(data);
         }
     });
 }

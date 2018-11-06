@@ -47,11 +47,7 @@
                             <td th:text="${selfscorea}"></td>
                             <td th:text="${underorovera}"></td>
                             <td>
-                                <div th:switch="${underorovera}">
-                                    <p th:case="'一致'">评估一致，无需补救</p>
-                                    <!-- *: case的默认的选项 -->
-                                    <p th:case="*"><a th:href="@{'/negotiate?ab=1&time='+${date}+'&selfeva='+${selfscorea}+'&syseva='+${sysscorea}}">查询与补救</a></p>
-                                </div>
+                                <a th:href="@{'/negotiate?ab=1&time='+${date}+'&selfeva='+${selfscorea}+'&syseva='+${sysscorea}}">查询与补救</a>
                             </td>
                          </tr>
                         <tr >
@@ -59,13 +55,15 @@
                             <td th:text="${sysscoreb}"></td>
                             <td th:text="${selfscoreb}"></td>
                             <td th:text="${underoroverb}"></td>
-                            <td>
+                            <td><a th:href="@{'/negotiate?ab=2&time='+${date}+'&selfeva='+${selfscoreb}+'&syseva='+${sysscoreb}}">查询与补救</a></td>
+                            <!----
                                 <div th:switch="${underoroverb}">
                                     <p th:case="'一致'">评估一致，无需补救</p>
-                                    <!-- *: case的默认的选项 -->
-                                    <p th:case="*"><a th:href="@{'/negotiate?ab=2&time='+${date}+'&selfeva='+${selfscoreb}+'&syseva='+${sysscoreb}}">查询与补救</a></p>
+                                    <!-- *: case的默认的选项
+                                    <p th:case="*"></p>
                                 </div>
-                            </td>
+                            ---->
+
                         </tr>
                         <tr >
                             <td>【结果分析】</td>
@@ -73,11 +71,7 @@
                             <td th:text="${selfscorec}"></td>
                             <td th:text="${underoroverc}"></td>
                             <td>
-                                <div th:switch="${underoroverc}">
-                                    <p th:case="'一致'">评估一致，无需补救</p>
-                                    <!-- *: case的默认的选项 -->
-                                    <p th:case="*"><a th:href="@{'/negotiate?ab=3&time='+${date}+'&selfeva='+${selfscorec}+'&syseva='+${sysscorec}}">查询与补救</a></p>
-                                </div>
+                                <a th:href="@{'/negotiate?ab=3&time='+${date}+'&selfeva='+${selfscorec}+'&syseva='+${sysscorec}}">查询与补救</a>
                             </td>
                         </tr>
                         </tbody>
