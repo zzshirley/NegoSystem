@@ -14,7 +14,7 @@ import javax.persistence.Id;
 
 public class Ability {
 
-    // 自增主键id
+    //自增主键id
     @Id
     @Column(name = "id")
     @GeneratedValue

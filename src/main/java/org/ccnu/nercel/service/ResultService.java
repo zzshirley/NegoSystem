@@ -34,4 +34,11 @@ public class ResultService {
 
         return paperList;
     }
+
+    public List<DoPaper> getAllpaper(){
+
+        List<DoPaper> paperList=resultRepo.findAll();
+
+        return paperList;
+    }
 }

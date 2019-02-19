@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xiaotong
@@ -19,6 +21,8 @@ import java.io.IOException;
 @Configuration
 public class WebSecurityConfig extends WebMvcConfigurerAdapter{
     public final static String SESSION_KEY="stuid";
+    public final static String BEGINTIME_KEY="begintime";
+    public final static String PAPERLIST_KEY="paperlist";
 
     @Bean
     public SecurityInterceptor getSecurityInterceptor(){

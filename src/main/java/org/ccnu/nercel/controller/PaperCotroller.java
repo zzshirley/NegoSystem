@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -48,20 +49,6 @@ public class PaperCotroller {
 
     public static int  optionnum=5;
 
-    public static String begintime;
-
-    public static List<PaperQuesOption> num1options;//第一道题选项
-
-    public static List<PaperQuesOption> num2options;//第二道题选项
-
-    public static List<PaperQuesOption> num3options;//第三道题
-
-    public static List judgeopt;
-
-    public static List subjudgeopt;//协商中测试答案
-
-    public static List paperidList;//协商中试题
-
     @Autowired
     private PaperService paperService;
 
@@ -84,6 +71,9 @@ public class PaperCotroller {
     @Autowired
     private SelfevaService selfevaService;
 
+    @Autowired
+    private AbilityNewService abilityNewService;
+
     public String paperid;
     public String time;
 
@@ -93,12 +83,21 @@ public class PaperCotroller {
         userid=session.getAttribute(WebSecurityConfig.SESSION_KEY);
         Paper paper = new Paper();
 
+        Logger loggetpaper = LogUtils.getDBLogger();
+
         time=times;
         paperid=TimetoPaperid(times);
         paper.setPaperid(paperid);
 
         List<Selfeva> selfevaList=selfevaService.getSelfEvaBytime((String)userid,times);
         List<DoPaper> doPapers=resultService.getpaperAndpaperid((String)userid,paperid);
+
+        List<PaperQuesOption> num1options=new ArrayList<>();//第一道题选项
+
+        List<PaperQuesOption> num2options=new ArrayList<>();//第二道题选项
+
+        List<PaperQuesOption> num3options=new ArrayList<>();//第三道题
+
         if(selfevaList.isEmpty()){
             model.addAttribute("selfirst","true");
             ModelAndView mv = new ModelAndView("testindex");
@@ -107,8 +106,7 @@ public class PaperCotroller {
         if(doPapers.isEmpty()){
 
             SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            begintime=df.format(System.currentTimeMillis());//开始时间
-
+            session.setAttribute(WebSecurityConfig.BEGINTIME_KEY,df.format(System.currentTimeMillis()));//开始时间
             ArrayList<String> quesnum= new ArrayList<>();//获取试卷的三个问题编
             ArrayList questions=new ArrayList();
             ArrayList rdmnum=new ArrayList();
@@ -166,7 +164,7 @@ public class PaperCotroller {
              num2options=findoption(paperQuesOptionList21,paperQuesOptionList20,2);
              num3options=findoption2(paperQuesOptionList31,paperQuesOptionList30,3);
              */
-            judgeopt=new ArrayList();//题目是否为正确的选项
+            /*List judgeopt=new ArrayList();//题目是否为正确的选项
 
             for(PaperQuesOption s: num1options){
                 judgeopt.add(s.getIstrueoption());
@@ -178,11 +176,12 @@ public class PaperCotroller {
 
             for(PaperQuesOption s: num3options){
                 judgeopt.add(s.getIstrueoption());
-            }
+            }*/
             model.addAttribute("ques1opt",num1options);
             model.addAttribute("ques2opt",num2options);
             model.addAttribute("ques3opt",num3options);
 
+            loggetpaper.info("学号："+(String)userid+"文章："+paperid+"时间"+session.getAttribute(WebSecurityConfig.BEGINTIME_KEY));
             System.out.println(num1options+"\n");
             ModelAndView mv = new ModelAndView("readingtest");
             return mv;
@@ -193,7 +192,7 @@ public class PaperCotroller {
         }
 
     }
-        //提交测试
+    //提交测试
     @PostMapping("/testsubmit")
     public ModelAndView testsubmit(@RequestParam Map req,HttpSession session){
 
@@ -208,52 +207,60 @@ public class PaperCotroller {
 
         Logger logdopaper = LogUtils.getDBLogger();
 
-        List queslist=new ArrayList();
+        List<String > queslist=new ArrayList();
         for(Iterator s=req.keySet().iterator();s.hasNext();){
             Object key = s.next();
             answer.add(req.get(key));
-            queslist.add((String)key);
+            queslist.add(key.toString());
         }
-
         System.out.println("问题列表为"+queslist);
-        List subList1 = answer.subList(0,5);
+        List judgeopt=new ArrayList();
+        for(String s: queslist) {
+            judgeopt.add(paperQuesOptService.quesOptions(Integer.valueOf(s).intValue()).get(0).getIstrueoption());
+        }
+        System.out.println("选项列表为"+judgeopt);
 
         /*
         * 分三部分计算分数
         * */
-        int score1=mark(subList1,judgeopt.subList(0,5));
+        int score;
+        int score1;
+        int score2;
+        List subList1 = answer.subList(0,5);
+        score1=mark(subList1,judgeopt.subList(0,5));
         System.out.println(subList1);
         System.out.println(judgeopt.subList(0,5));
 
         List subList2 = answer.subList(5, 10);
-        int score2=mark(subList2,judgeopt.subList(5,10));
-
+        score2=mark(subList2,judgeopt.subList(5,10));
         System.out.println(subList2);
         System.out.println(judgeopt.subList(5,10));
 
         List subList3 = answer.subList(10, 15);
 
+        System.out.println(subList3);
+        System.out.println(judgeopt.subList(10,15));
+
 
         String stuanswer=String.join(",",answer);
         String stuques=String.join(",",queslist);
 
-        int score=mark(answer,judgeopt);
+        score=mark(answer,judgeopt);
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat af = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String endtime=af.format(System.currentTimeMillis());
 
         doPaper.setPaperid(paperid);
         doPaper.setStuid((String)userid);
         doPaper.setScore(score);
         doPaper.setPaperanswer(stuanswer);
-        doPaper.setPaperstate("1");
-        doPaper.setBegintime(begintime);
-        doPaper.setEndtime(df.format(System.currentTimeMillis()));
+        doPaper.setPaperstate(judgeopt.toString());
+        doPaper.setBegintime((String)session.getAttribute(WebSecurityConfig.BEGINTIME_KEY));
+        doPaper.setEndtime(endtime);
         doPaper.setScorea(score1);
         doPaper.setScoreb(score2);
         doPaper.setScorec(score-score1-score2);
         doPaper.setQueslist(stuques);
-        
-
 
         System.out.println("学生选择的答案："+answer);
 
@@ -272,7 +279,7 @@ public class PaperCotroller {
 
         logdopaper.info("提交测试"+userid+"/"+doPaper.getPaperid()+"/"+answer+"/"+score+"/"+queslist);
 
-        ModelAndView mv = new ModelAndView("/testindex");
+        ModelAndView mv = new ModelAndView("redirect:testindex");
 
         return mv;
 
@@ -315,25 +322,35 @@ public class PaperCotroller {
 
         ques.setOptions(paperquestion);
 
-        subjudgeopt=new ArrayList();
-        paperidList=new ArrayList();
+        //subjudgeopt=new ArrayList();
+        int j;
+        List<String> paperidList=new ArrayList();
         for(PaperQuesOption subs:paperQuesOptionList){
-            subjudgeopt.add(subs.getIstrueoption());
-            paperidList.add(subs.getId());
+            //subjudgeopt.add(subs.getIstrueoption());
+            j=subs.getId();
+            paperidList.add(String.valueOf(j));
         }
+        String plist=String.join(",",paperidList);
+
+        session.setAttribute(WebSecurityConfig.PAPERLIST_KEY,plist);
         paperQuesOptionList.add(ques);
         logregetpaper.info("协商中的测试:获取测试列表"+userid+"/"+param.get("ability")+"/"+param.get("paperid")+"/"+paperidList);
         return paperQuesOptionList;
     }
-    @PostMapping("/retest")
-    public int reTest(@RequestParam Map<String, String> param, HttpSession session){
+    @PostMapping("/retest")//协商中重新测试
+    public Map reTest(@RequestParam Map<String, String> param, HttpSession session){
 
         Object userid;
         userid = session.getAttribute(WebSecurityConfig.SESSION_KEY);//用户id
         Nego nego=new Nego();
-
+        AbilityNew abilityNew=new AbilityNew();
         String paperid=null;
+
         paperid=transPaperid(param.get("paperid"));
+
+        List<Ability> abilityList=abilityService.findAbilityTimes((String)userid,transtoTime(param.get("paperid")));
+        List<AbilityNew> abilityNewList=abilityNewService.findAbilitynew((String)userid,paperid);
+        List<DoPaper>  doPaperList =resultService.getpaperAndpaperid((String)userid,paperid);
 
         List<String> negoanswer = java.util.Arrays.asList(param.get("btntext").split(","));
 
@@ -344,28 +361,111 @@ public class PaperCotroller {
         System.out.println("日期："+param.get("paperid"));
 
         System.out.println("转list："+negoanswer);
-        System.out.println("参考答案："+subjudgeopt);
 
+        Object paperList=session.getAttribute(WebSecurityConfig.PAPERLIST_KEY);
+        System.out.println("答案："+paperList);
+        System.out.println("数据类型："+paperList.getClass());
+
+
+        List<String> sub=java.util.Arrays.asList(paperList.toString().split(","));
+
+        List<String> subjudgeopt=new ArrayList<>();
+
+        for(Object s:sub){
+            subjudgeopt.add(paperQuesOptService.quesOptions(Integer.parseInt(s.toString())).get(0).getIstrueoption());
+        }
+        System.out.println("参考答案："+subjudgeopt);
+        System.out.println("参考答案数据类型："+subjudgeopt.getClass());
         Logger logretest = LogUtils.getBussinessLogger();
 
         int score=mark(negoanswer,subjudgeopt);
         String s=String.valueOf(score);
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
+        double score_new=0;
+        if(abilityNewList.isEmpty()){
+            if(abToString(param.get("ability")).equals("1")){
+                score_new=Double.valueOf(doPaperList.get(doPaperList.size()-1).getScorea())*0.4+(double)score*0.6;
+                abilityNew.setAbt1(score_new);
+                abilityNew.setAbt2(Double.valueOf(doPaperList.get(doPaperList.size()-1).getScoreb()));
+                abilityNew.setAbt3(Double.valueOf(doPaperList.get(doPaperList.size()-1).getScorec()));
+                abilityNew.setStuid((String)userid);
+                abilityNew.setAbt(param.get("ability"));
+                abilityNew.setTime(df.format(System.currentTimeMillis()));
+                abilityNew.setPaperid(paperid);
+                abilityNewService.AbilityNew(abilityNew);
+            }
+            if(abToString(param.get("ability")).equals("2")){
+                score_new=Double.valueOf(doPaperList.get(doPaperList.size()-1).getScoreb())*0.4+(double)score*0.6;
+                abilityNew.setAbt2(score_new);
+                abilityNew.setAbt1(doPaperList.get(doPaperList.size()-1).getScorea());
+                abilityNew.setAbt3(doPaperList.get(doPaperList.size()-1).getScorec());
+                abilityNew.setStuid((String)userid);
+                abilityNew.setAbt(param.get("ability"));
+                abilityNew.setTime(df.format(System.currentTimeMillis()));
+                abilityNew.setPaperid(paperid);
+                abilityNewService.AbilityNew(abilityNew);
+            }
+            if(abToString(param.get("ability")).equals("3")){
+                score_new=Double.valueOf(doPaperList.get(doPaperList.size()-1).getScorec())*0.4+(double)score*0.6;
+                abilityNew.setAbt3(score_new);
+                abilityNew.setAbt2(doPaperList.get(doPaperList.size()-1).getScoreb());
+                abilityNew.setAbt1(doPaperList.get(doPaperList.size()-1).getScorea());
+                abilityNew.setStuid((String)userid);
+                abilityNew.setAbt(param.get("ability"));
+                abilityNew.setTime(df.format(System.currentTimeMillis()));
+                abilityNew.setPaperid(paperid);
+                abilityNewService.AbilityNew(abilityNew);
+            }
+        }else{
+            if(abToString(param.get("ability")).equals("1")){
+                score_new=abilityNewList.get(abilityNewList.size()-1).getAbt1()*0.4+(double)score*0.6;
+                abilityNew.setAbt1(score_new);
+                abilityNew.setAbt2(abilityNewList.get(abilityNewList.size()-1).getAbt2());
+                abilityNew.setAbt3(abilityNewList.get(abilityNewList.size()-1).getAbt3());
+                abilityNew.setStuid((String)userid);
+                abilityNew.setAbt(param.get("ability"));
+                abilityNew.setTime(df.format(System.currentTimeMillis()));
+                abilityNew.setPaperid(paperid);
+                abilityNewService.AbilityNew(abilityNew);
+            }
+            if(abToString(param.get("ability")).equals("2")){
+                score_new=abilityNewList.get(abilityNewList.size()-1).getAbt2()*0.4+(double)score*0.6;
+                abilityNew.setAbt2(score_new);
+                abilityNew.setAbt1(abilityNewList.get(abilityNewList.size()-1).getAbt1());
+                abilityNew.setAbt3(abilityNewList.get(abilityNewList.size()-1).getAbt3());
+                abilityNew.setStuid((String)userid);
+                abilityNew.setAbt(param.get("ability"));
+                abilityNew.setTime(df.format(System.currentTimeMillis()));
+                abilityNew.setPaperid(paperid);
+                abilityNewService.AbilityNew(abilityNew);
+            }
+            if(abToString(param.get("ability")).equals("3")){
+                score_new=abilityNewList.get(abilityNewList.size()-1).getAbt3()*0.4+(double)score*0.6;
+                abilityNew.setAbt3(score_new);
+                abilityNew.setAbt2(abilityNewList.get(abilityNewList.size()-1).getAbt2());
+                abilityNew.setAbt1(abilityNewList.get(abilityNewList.size()-1).getAbt1());
+                abilityNew.setStuid((String)userid);
+                abilityNew.setAbt(param.get("ability"));
+                abilityNew.setTime(df.format(System.currentTimeMillis()));
+                abilityNew.setPaperid(paperid);
+                abilityNewService.AbilityNew(abilityNew);
+            }
+        }
         nego.setStuid((String)userid);
         nego.setPaperid(paperid);
         nego.setAbility(abToString(param.get("ability")));
         nego.setNegopt("3");
-        nego.setMarka(paperidList.toString());
+        nego.setMarka(paperList.toString());
         nego.setMarkb(param.get("btntext"));
         nego.setMarkc(s);
         nego.setEndtime(df.format(System.currentTimeMillis()));
         negoService.insertNego(nego);
+        Map map=new HashMap();
+        map.put("scoree",score);
+        map.put("sysscore",score_new);
 
         logretest.info("提交测试"+userid+"/"+param.get("ability")+"/"+paperid+"/"+score);
-
-        return score;
-
+        return map;
     }
 
     //计算分数
@@ -480,7 +580,30 @@ public class PaperCotroller {
         }
         return paperid;
     }
+    public String transtoTime(String s){
 
+        String times=null;
+        if(s.equals("2018-10-10 SRL")){
+            times="1";
+        }else if(s.equals("2018-10-17 SRL")){
+            times="2";
+        }else if(s.equals("2018-10-24 SRL")){
+            times="3";
+        }else if(s.equals("2018-11-7 SRL")){
+            times="4";
+        }else if(s.equals("2018-11-14 SRL")){
+            times="5";
+        }else if(s.equals("2018-11-21 SRL")){
+            times="6";
+        }else if(s.equals("2018-12-12 SRL")){
+            times="7";
+        }else if(s.equals("2018-12-19 SRL")){
+            times="8";
+        }else if(s.equals("2018-12-26 SRL")){
+            times="9";
+        }
+        return times;
+    }
     public String transPaperid(String s){
 
         String paperid=null;

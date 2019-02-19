@@ -6,11 +6,14 @@ import org.ccnu.nercel.config.WebSecurityConfig;
 import org.ccnu.nercel.service.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -45,7 +48,15 @@ public class NegotiateController {
     @Autowired
     private StuQueService stuQueService;
 
+    @Autowired
+    private SelfevaNewService selfevaNewService;
 
+    @Autowired
+    private AbilityNewService abilityNewService;
+
+    /*
+    开始协商
+     */
     @RequestMapping("/negotiate")
     public ModelAndView negotiate(@RequestParam String ab, @RequestParam String time, @RequestParam String selfeva,@RequestParam String syseva,HttpSession session,Model model) {
 
@@ -57,7 +68,7 @@ public class NegotiateController {
 
        Nego nego=new Nego();
        nego.setStuid((String)userid);
-       nego.setPaperid(timeTopaperid(time));
+       nego.setPaperid(transPaperid(time));
        nego.setAbility(ab);
        nego.setEndtime(df.format(System.currentTimeMillis()));
        nego.setMarka("negostart");
@@ -72,7 +83,7 @@ public class NegotiateController {
        logabt.info("协商开始："+userid+"/"+ab+"/"+time+"/"+selfeva+"/"+syseva);
 
        ModelAndView mv = new ModelAndView("negotiate");
-        return mv;
+       return mv;
     }
 
     //查询测评结果，返回成绩查询list
@@ -177,8 +188,34 @@ public class NegotiateController {
         return map;
     }
     //学生解释测评结果
+    @PostMapping("/findExp")
+    public Map findstuexp(@RequestParam Map<String, String> param, HttpSession session){
+
+        String exp="stuexp";
+
+        Object userid;
+        userid = session.getAttribute(WebSecurityConfig.SESSION_KEY);//用户id
+
+        Logger logexp= LogUtils.getBussinessLogger();
+
+        String paperid=transPaperid(param.get("paperid"));
+
+        List<Nego> negoList=negoService.findNegot((String)userid,paperid,"2");
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        logexp.info("学生请求解释测评结果"+"/"+"stuid"+userid+"/"+"ab:"+param.get("ab"));
+
+        Map negoexp=new HashMap();
+        for(int i=0;i<negoList.size();i++){
+            negoexp.put(exp+String.valueOf(i),negoList.get(i).getMarkc());
+        }
+
+        return negoexp;
+    }
+    //学生解释测评结果
     @PostMapping("/postExp")
-    public String stuexp(@RequestParam Map<String, String> param, HttpSession session){
+    public Map stuexp(@RequestParam Map<String, String> param, HttpSession session){
 
         Object userid;
         userid = session.getAttribute(WebSecurityConfig.SESSION_KEY);//用户id
@@ -187,6 +224,8 @@ public class NegotiateController {
         Nego nego=new Nego();
 
         String paperid=transPaperid(param.get("paperid"));
+
+        List<Nego> negoList=negoService.findNegot((String)userid,paperid,"2");
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -206,20 +245,107 @@ public class NegotiateController {
 
         logexp.info("学生提交测试理由"+"/"+"stuid"+userid+"/"+"ab:"+param.get("ab")+"/"+param.get("btnoption")+"/"+param.get("btntext"));
 
-        return "ok";
-    }
+        Map negoexp=new HashMap();
+        negoexp.put("ret","成功提交成绩解释");
 
+        return negoexp;
+    }
+    //学生重新自我测评
     @PostMapping("/postreself")
     public void reSeleva(@RequestParam Map<String, String> param, HttpSession session){
         Object userid;
         userid = session.getAttribute(WebSecurityConfig.SESSION_KEY);//用户id
 
-        Nego nego=new Nego();
-        Logger logretest= LogUtils.getBussinessLogger();
+        SelfevaNew selfevaNew=new SelfevaNew();
 
         String paperid=transPaperid(param.get("paperid"));
 
+        Nego nego=new Nego();
+        Logger logretest= LogUtils.getBussinessLogger();
+
+
+
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        List<SelfevaNew> selfevaNewList=selfevaNewService.findnewSelf((String)userid,paperid);
+        List<Selfeva> selfevaList=selfevaService.getSelfEvaBytime((String)userid,transtimes(param.get("paperid")));
+
+        double self_new;
+        if(selfevaNewList.isEmpty()){
+            if(abToString(param.get("ab")).equals("1")){
+                //self_new=Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt1())*0.6+Double.valueOf(param.get("selfeva"))*0.4;
+                self_new=Double.valueOf(param.get("selfeva"));
+                selfevaNew.setAbt1(self_new);
+                selfevaNew.setAbt2(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt2()));
+                selfevaNew.setAbt3(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt3()));
+                selfevaNew.setEndtime(df.format(System.currentTimeMillis()));
+                selfevaNew.setStuid((String)userid);
+                selfevaNew.setTimes(paperid);
+                selfevaNew.setAbt(abToString(param.get("ab")));
+                selfevaNewService.savenewself(selfevaNew);
+            }
+            if(abToString(param.get("ab")).equals("2")){
+                //self_new=Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt2())*0.6+Double.valueOf(param.get("selfeva"))*0.4;
+                self_new=Double.valueOf(param.get("selfeva"));
+                selfevaNew.setAbt2(self_new);
+                selfevaNew.setAbt1(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt1()));
+                selfevaNew.setAbt3(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt3()));
+                selfevaNew.setEndtime(df.format(System.currentTimeMillis()));
+                selfevaNew.setStuid((String)userid);
+                selfevaNew.setTimes(paperid);
+                selfevaNew.setAbt(abToString(param.get("ab")));
+                selfevaNewService.savenewself(selfevaNew);
+            }
+            if(abToString(param.get("ab")).equals("3")){
+               // self_new=Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt3())*0.6+Double.valueOf(param.get("selfeva"))*0.4;
+                self_new=Double.valueOf(param.get("selfeva"));
+                selfevaNew.setAbt3(self_new);
+                selfevaNew.setAbt2(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt2()));
+                selfevaNew.setAbt1(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt1()));
+                selfevaNew.setEndtime(df.format(System.currentTimeMillis()));
+                selfevaNew.setStuid((String)userid);
+                selfevaNew.setTimes(paperid);
+                selfevaNew.setAbt(abToString(param.get("ab")));
+                selfevaNewService.savenewself(selfevaNew);
+            }
+        }else{
+            if(abToString(param.get("ab")).equals("1")){
+                //self_new=selfevaNewList.get(selfevaNewList.size()-1).getAbt1()*0.6+Double.valueOf(param.get("selfeva"))*0.4;
+                self_new=Double.valueOf(param.get("selfeva"));
+                selfevaNew.setAbt1(self_new);
+                selfevaNew.setAbt2(selfevaNewList.get(selfevaNewList.size()-1).getAbt2());
+                selfevaNew.setAbt3(selfevaNewList.get(selfevaNewList.size()-1).getAbt3());
+                selfevaNew.setEndtime(df.format(System.currentTimeMillis()));
+                selfevaNew.setStuid((String)userid);
+                selfevaNew.setTimes(paperid);
+                selfevaNew.setAbt(abToString(param.get("ab")));
+                selfevaNewService.savenewself(selfevaNew);
+            }
+            if(abToString(param.get("ab")).equals("2")){
+                //self_new=selfevaNewList.get(selfevaNewList.size()-1).getAbt2()*0.6+Double.valueOf(param.get("selfeva"))*0.4;
+                self_new=Double.valueOf(param.get("selfeva"));
+                selfevaNew.setAbt2(self_new);
+                selfevaNew.setAbt1(selfevaNewList.get(selfevaNewList.size()-1).getAbt1());
+                selfevaNew.setAbt3(selfevaNewList.get(selfevaNewList.size()-1).getAbt3());
+                selfevaNew.setEndtime(df.format(System.currentTimeMillis()));
+                selfevaNew.setStuid((String)userid);
+                selfevaNew.setTimes(paperid);
+                selfevaNew.setAbt(abToString(param.get("ab")));
+                selfevaNewService.savenewself(selfevaNew);
+            }
+            if(abToString(param.get("ab")).equals("3")){
+                //self_new=selfevaNewList.get(selfevaNewList.size()-1).getAbt3()*0.6+Double.valueOf(param.get("selfeva"))*0.4;
+                self_new=Double.valueOf(param.get("selfeva"));
+                selfevaNew.setAbt3(Double.valueOf(param.get("selfeva")));
+                selfevaNew.setAbt2(selfevaNewList.get(selfevaNewList.size()-1).getAbt2());
+                selfevaNew.setAbt1(selfevaNewList.get(selfevaNewList.size()-1).getAbt1());
+                selfevaNew.setEndtime(df.format(System.currentTimeMillis()));
+                selfevaNew.setStuid((String)userid);
+                selfevaNew.setAbt(abToString(param.get("ab")));
+                selfevaNew.setTimes(paperid);
+                selfevaNewService.savenewself(selfevaNew);
+            }
+        }
 
         nego.setStuid((String)userid);
         nego.setPaperid(paperid);
@@ -229,13 +355,11 @@ public class NegotiateController {
         nego.setMarkb(param.get("selfeva"));
         nego.setEndtime(df.format(System.currentTimeMillis()));
         System.out.println("学生的自我评价："+param.get("selfeva"));//ok
-
         logretest.info("学生重新自我测评"+"stuid"+userid+"/"+"ab:"+param.get("ab")+"/"+param.get("selfeva"));
-
         negoService.insertNego(nego);
 
     }
-
+    //同意协商
     @PostMapping("/negoagree")
     public void negoDecision(@RequestParam Map<String, String> param, HttpSession session){
 
@@ -249,6 +373,110 @@ public class NegotiateController {
         String paperid=transPaperid(param.get("paperid"));
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        SelfevaNew selfevaNew=new SelfevaNew();
+        AbilityNew abilityNew=new AbilityNew();
+        List<SelfevaNew> selfevaNewList =selfevaNewService.findnewSelf((String)userid,paperid);
+        List<AbilityNew> abilityNewList=abilityNewService.findAbilitynew((String)userid,paperid);
+        List<Selfeva> selfevaList=selfevaService.getSelfEvaBytime((String)userid,transtimes(param.get("paperid")));
+        List<Ability> abilityList = abilityService.findAbilityTimes((String)userid,transtimes(param.get("paperid")));
+        List<DoPaper>  doPaperList =resultService.getpaperAndpaperid((String)userid,paperid);
+
+        if(selfevaNewList.isEmpty()){
+            if(abToString(param.get("ability")).equals("1")){
+                selfevaNew.setAbt(abToString(param.get("ability")));
+                selfevaNew.setAbt1(Double.valueOf(param.get("selfeva")));
+                selfevaNew.setAbt2(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt2()));
+                selfevaNew.setAbt3(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt3()));
+            }
+            if(abToString(param.get("ability")).equals("2")){
+                selfevaNew.setAbt(abToString(param.get("ability")));
+                selfevaNew.setAbt2(Double.valueOf(param.get("selfeva")));
+                selfevaNew.setAbt1(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt1()));
+                selfevaNew.setAbt3(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt3()));
+            }
+            if(abToString(param.get("ability")).equals("3")){
+                selfevaNew.setAbt(abToString(param.get("ability")));
+                selfevaNew.setAbt3(Double.valueOf(param.get("selfeva")));
+                selfevaNew.setAbt2(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt2()));
+                selfevaNew.setAbt1(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt1()));
+            }
+            selfevaNew.setStuid((String)userid);
+            selfevaNew.setEndtime(df.format(System.currentTimeMillis()));
+            selfevaNew.setTimes(paperid);
+            selfevaNewService.savenewself(selfevaNew);
+        }else{
+            if(abToString(param.get("ability")).equals("1")){
+                selfevaNew.setAbt(abToString(param.get("ability")));
+                selfevaNew.setAbt1(Double.valueOf(param.get("selfeva")));
+                selfevaNew.setAbt2(selfevaNewList.get(selfevaNewList.size()-1).getAbt2());
+                selfevaNew.setAbt3(Double.valueOf(selfevaList.get(selfevaList.size()-1).getAbt3()));
+            }
+            if(abToString(param.get("ability")).equals("2")){
+                selfevaNew.setAbt(abToString(param.get("ability")));
+                selfevaNew.setAbt2(Double.valueOf(param.get("selfeva")));
+                selfevaNew.setAbt1(selfevaNewList.get(selfevaNewList.size()-1).getAbt1());
+                selfevaNew.setAbt3(selfevaNewList.get(selfevaNewList.size()-1).getAbt3());
+            }
+            if(abToString(param.get("ability")).equals("3")){
+                selfevaNew.setAbt(abToString(param.get("ability")));
+                selfevaNew.setAbt3(Double.valueOf(param.get("selfeva")));
+                selfevaNew.setAbt2(selfevaNewList.get(selfevaNewList.size()-1).getAbt2());
+                selfevaNew.setAbt1(selfevaNewList.get(selfevaNewList.size()-1).getAbt1());
+            }
+            selfevaNew.setStuid((String)userid);
+            selfevaNew.setEndtime(df.format(System.currentTimeMillis()));
+            selfevaNew.setTimes(paperid);
+            selfevaNewService.savenewself(selfevaNew);
+        }
+        //测试成绩
+        if(abilityNewList.isEmpty()){
+            if(abToString(param.get("ability")).equals("1")){
+                abilityNew.setAbt(abToString(param.get("ability")));
+                abilityNew.setAbt1(Double.valueOf(param.get("sys")));
+                abilityNew.setAbt2(Double.valueOf(doPaperList.get(selfevaList.size()-1).getScoreb()));
+                abilityNew.setAbt3(Double.valueOf(doPaperList.get(selfevaList.size()-1).getScorec()));
+            }
+            if(abToString(param.get("ability")).equals("2")){
+                abilityNew.setAbt(abToString(param.get("ability")));
+                abilityNew.setAbt2(Double.valueOf(param.get("sys")));
+                abilityNew.setAbt1(Double.valueOf(doPaperList.get(selfevaList.size()-1).getScorea()));
+                abilityNew.setAbt3(Double.valueOf(doPaperList.get(selfevaList.size()-1).getScorec()));
+            }
+            if(abToString(param.get("ability")).equals("3")){
+                abilityNew.setAbt(abToString(param.get("ability")));
+                abilityNew.setAbt3(Double.valueOf(param.get("sys")));
+                abilityNew.setAbt2(Double.valueOf(doPaperList.get(selfevaList.size()-1).getScoreb()));
+                abilityNew.setAbt1(Double.valueOf(doPaperList.get(selfevaList.size()-1).getScorea()));
+            }
+            abilityNew.setStuid((String)userid);
+            abilityNew.setTime(df.format(System.currentTimeMillis()));
+            abilityNew.setPaperid(paperid);
+            abilityNewService.AbilityNew(abilityNew);
+        }else{
+            if(abToString(param.get("ability")).equals("1")){
+                abilityNew.setAbt(abToString(param.get("ability")));
+                abilityNew.setAbt1(Double.valueOf(param.get("sys")));
+                abilityNew.setAbt2(abilityNewList.get(abilityNewList.size()-1).getAbt2());
+                abilityNew.setAbt3(abilityNewList.get(abilityNewList.size()-1).getAbt3());
+            }
+            if(abToString(param.get("ability")).equals("2")){
+                abilityNew.setAbt(abToString(param.get("ability")));
+                abilityNew.setAbt2(Double.valueOf(param.get("sys")));
+                abilityNew.setAbt1(abilityNewList.get(abilityNewList.size()-1).getAbt1());
+                abilityNew.setAbt3(abilityNewList.get(abilityNewList.size()-1).getAbt3());
+            }
+            if(abToString(param.get("ability")).equals("3")){
+                abilityNew.setAbt(abToString(param.get("ability")));
+                abilityNew.setAbt3(Double.valueOf(param.get("sys")));
+                abilityNew.setAbt2(abilityNewList.get(abilityNewList.size()-1).getAbt2());
+                abilityNew.setAbt1(abilityNewList.get(abilityNewList.size()-1).getAbt1());
+            }
+            abilityNew.setStuid((String)userid);
+            abilityNew.setTime(df.format(System.currentTimeMillis()));
+            abilityNew.setPaperid(paperid);
+            abilityNewService.AbilityNew(abilityNew);
+        }
 
         nego.setStuid((String)userid);
         nego.setPaperid(paperid);
@@ -290,6 +518,7 @@ public class NegotiateController {
         negoService.insertNego(nego);
 
     }
+    //折衷
     @PostMapping("/compromise")
     public double negoComp(@RequestParam Map<String, String> param, HttpSession session){
 
@@ -314,12 +543,12 @@ public class NegotiateController {
         log0.info("做决定-学生选择折衷"+"stuid"+userid+"/"+"ab:"+param.get("ability")+"/"+param.get("isagree"));
 
         negoService.insertNego(nego);
-        double cor=compare(param.get("self"),param.get("score"));
+        double cor=compare(Double.valueOf(param.get("self")),Double.valueOf(param.get("score")));
         return cor;
     }
     //回答学生提问
     @PostMapping("/stuAsk")
-    public List negostuAsk(@RequestParam Map<String, String> param, HttpSession session){
+    public Map negostuAsk(@RequestParam Map<String, String> param, HttpSession session){
         Object userid;
         userid = session.getAttribute(WebSecurityConfig.SESSION_KEY);//用户id
 
@@ -327,6 +556,8 @@ public class NegotiateController {
         Logger logaskstu = LogUtils.getBussinessLogger();
 
         String paperid=transPaperid(param.get("paperid"));
+
+        List<Nego> negoList=negoService.findNegot((String)userid,paperid,"5");
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         nego.setStuid((String)userid);
@@ -340,10 +571,15 @@ public class NegotiateController {
         logaskstu.info("请求本周学生问题"+"stuid"+userid+"/");
 
         List<StuQues> stuQues=stuQueService.findstuask(paperid);
+        Map stuques=new HashMap();
+        stuques.put("stuQues",stuQues.get(0).getStuques());
+        for(Nego s:negoList){
+            stuques.put(s.getId(),s.getMarkb());
+        }
 
-        return stuQues;
+        return stuques;
     }
-    //回答学生提问
+    //提交回答学生提问
     @PostMapping("/anwAsk")
     public void negoanswerAsk(@RequestParam Map<String, String> param, HttpSession session){
         Object userid;
@@ -354,18 +590,41 @@ public class NegotiateController {
 
         String paperid=transPaperid(param.get("paperid"));
 
+        List<Nego> negoList=negoService.findNegot((String)userid,paperid,"5");
+
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         nego.setStuid((String)userid);
         nego.setPaperid(paperid);
         nego.setAbility(abToString(param.get("ab")));
         nego.setNegopt("5");
-        nego.setMarka("查看学生提问");
+        nego.setMarka("填写学生提问");
         nego.setMarkb(param.get("stuawr"));
         nego.setEndtime(df.format(System.currentTimeMillis()));
         negoService.insertNego(nego);
 
         logaskstu.info("回答本周学生问题"+"stuid"+userid+"/"+param.get("ab")+"/"+"学生回答内容："+param.get("stuawr"));
 
+    }
+    //提问题
+    @PostMapping("/returnstuQues")
+    public Map negostuQues(@RequestParam Map<String, String> param, HttpSession session){
+        Object userid;
+        userid = session.getAttribute(WebSecurityConfig.SESSION_KEY);//用户id
+
+        Logger logaskque = LogUtils.getBussinessLogger();
+
+        String paperid=transPaperid(param.get("paperid"));
+        List<Nego> negoList=negoService.findNegot((String)userid,paperid,"6");
+
+        logaskque.info("学生的提问"+"stuid"+userid+"/"+param.get("ab")+"/"+paperid+"/");
+
+        Map stuask=new HashMap();
+
+        for(int i=0;i<negoList.size();i++){
+            stuask.put(i,negoList.get(i).getMarkb());
+        }
+
+            return stuask;
     }
 
     //提问题
@@ -484,12 +743,12 @@ public class NegotiateController {
         return str;
     }
     //判断高估/低估
-    public double compare(String self,String sys){
+    public double compare(double self,double sys){
 
         double eva=0;
 
-        int selfeva = Integer.valueOf(self).intValue();
-        int syseva = Integer.valueOf(sys).intValue();
+        double selfeva = self;
+        double syseva = sys;
 
         if(Math.abs(selfeva-syseva)==1||Math.abs(selfeva-syseva)==0){
             eva=0;
@@ -505,6 +764,7 @@ public class NegotiateController {
 
         return eva;
     }
+
     //获取到当前的文章id
     public String transPaperid(String s){
 
@@ -529,6 +789,49 @@ public class NegotiateController {
             paperid="srl10";
         }
         return paperid;
+    }
+    public String transtimes(String s){
+
+        String paperid=null;
+        if(s.equals("2018-10-10 SRL")){
+            paperid="1";
+        }else if(s.equals("2018-10-17 SRL")){
+            paperid="2";
+        }else if(s.equals("2018-10-24 SRL")){
+            paperid="3";
+        }else if(s.equals("2018-11-7 SRL")){
+            paperid="4";
+        }else if(s.equals("2018-11-14 SRL")){
+            paperid="5";
+        }else if(s.equals("2018-11-21 SRL")){
+            paperid="6";
+        }else if(s.equals("2018-12-12 SRL")){
+            paperid="7";
+        }else if(s.equals("2018-12-19 SRL")){
+            paperid="8";
+        }else if(s.equals("2018-12-26 SRL")){
+            paperid="9";
+        }
+        return paperid;
+    }
+    public static String format(double value) {
+
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMaximumFractionDigits(2);
+        /*
+         * setMinimumFractionDigits设置成2
+         *
+         * 如果不这么做，那么当value的值是100.00的时候返回100
+         *
+         * 而不是100.00
+         */
+        nf.setMinimumFractionDigits(2);
+        nf.setRoundingMode(RoundingMode.HALF_UP);
+        /*
+         * 如果想输出的格式用逗号隔开，可以设置成true
+         */
+        nf.setGroupingUsed(false);
+        return nf.format(value);
     }
 }
 

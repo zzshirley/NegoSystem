@@ -7,34 +7,36 @@ var disagr=1;
 var comagree=00;
 var comdisagree=01;
 var comscore=0;
+var endadd=0
+var abc=0
 console.log(ab,times)
 $(function(){
-    $("#opt1").bind('click', function() {
+    $("#opt1").on('click', function() {
         console.log(ab,times)
         addstu1();
         addStuMsg(ab,times);
     });
-    $("#opt2").bind('click',function () {
+    $("#opt2").on('click',function () {
         stuexplain();
-        teacherask();
+        addStuexp(ab,times);
     });
-    $("#opt3").bind('click',function () {
+    $("#opt3").on('click',function () {
         sturetest();
         reTest(ab,times);
     });
-    $("#opt4").bind('click',function(){
+    $("#opt4").on('click',function(){
         stureeva();
         reselfeva(ab);
     })
-    $("#opt5").bind('click',function(){
+    $("#opt5").on('click',function(){
         answerstu();
         addStuAsk(ab,times)
     })
-    $("#opt6").bind('click',function () {
+    $("#opt6").on('click',function () {
         quesstu()
-        stuQues()
+        askstuQues(ab,times)
     })
-    $("#opt7").bind('click',function () {
+    $("#opt7").on('click',function () {
         decision(score0,selfeva0);
     })
 
@@ -47,7 +49,7 @@ function addstu1(){
 //1.返回成绩列表
 function add(data,ab) {
     console.log(data);
-    tpl = '<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><table class="table table-hover" style="width: 300px "><thead><tr><th>文章/题目</th><th>成绩/选项</th></tr></thead><tbody>{msg}</tbody></table></div></div></div>';
+    tpl = '<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><table class="table table-hover"><thead><tr><th>文章/题目</th><th>成绩/选项</th></tr></thead><tbody>{msg}</tbody></table></div></div></div>';
     str="<tr>"+"<td>"+data.date +"</td>"+"<td>"+data.score+"</td>"+"</tr>";
     str2='';
     if(times=="2018-10-10 SRL"){
@@ -67,26 +69,52 @@ function stuexplain(){
     $("#chat").append(tpl);
 }
 //2.系统生成表单，请学生填写原因
-function teacherask() {
+function teacherask(data) {
+     var Data=data
+     endadd=endadd+1;
+     abc=abc+1;
      tpl='<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div>' +
          '<div class="message-l"><div class="form-group" ><div class="list-group-item"><span>你觉得问题出在哪个方面</span>' +
-         '<select id="selfexplain" class="form-control" name="selfexplain">\n' +
+         '<select '+' id=selectexp'+endadd+" "+'class='+'"form-control">'+
          '<option>我的能力</option>\n' +
          '<option>我的努力程度</option>\n' +
          '<option>题目难度</option>\n' +
          '<option>运气</option>\n' +
          '<option>其他原因</option>\n' +
          '</select>  ' +
-         '<input type="text" name="stuexplain" class="form-control"  placeholder="请说出你的理由" required data-bv-notempty-message="解释原因不为空">' +
-         '<center><input type="submit" class="btn btn-default" id="expbtn" onclick="selfexp() "></center>'+
+         '<input type="text" id="stuexp" class="form-control"  placeholder="请说出你的理由" required data-bv-notempty-message="解释原因不为空"'+"name=selfexp"+abc+'>'+
+         '<ul>'
+     var str;
+     var str1="<p>历史解释</p>";
+     var str0;
+     if(Data==null){
+         str='</ul><p>无历史解释<p><center><input type="submit" class="btn btn-default" onclick="selfexp(endadd,abc) "></center>'+
          '<div></div></div></div></div>'
+     }else {
+         for (var key in Data){
+             if(Data[key]!=null){
+                 str0='<li>'+Data[key]+'</li>'
+                 str1=str1+str0;
+             }
+         }
+         str='</ul><center><input type="submit" class="btn btn-default" onclick="selfexp(endadd,abc) "></center>'+
+             '<div></div></div></div></div>'
+         str=str1+str;
+     }
+
+     tpl=tpl+str;
      $("#chat").append(tpl);
     var div = document.getElementById("negotiate");
     div.scrollTop = div.scrollHeight;
  }
-function selfexp() {
-    var opt=$('#selfexplain option:selected').val();
-    var stutext=$('input').val();
+function selfexp(endadd,abc) {
+    var inppp='input[name='+'selfexp'+abc+']'
+    var selectexp='#'+'selectexp'+endadd+' option:selected'
+    var opt=$(selectexp).val();
+    var stutext= $(inppp).val();
+    console.log(selectexp);
+    console.log(opt);
+    console.log(stutext);
     postexplain(stutext,opt,ab,times);
     stureturn();
 }
@@ -97,7 +125,8 @@ function sturetest(){
 }
 //3.系统生成测试列表&&学生提交测试
 function tearetest(data) {
-    tpl='<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><table class="table table-hover" style="width: 300px"><div class="form-group"><a class="list-group-item" ><h5>{msg}</h5><span>{msg1}<center><input type="submit" class="btn btn-default" id="retestbtn" onclick="retest0()"></center></span></a></div></div></div>';
+    endadd=endadd+1
+    tpl='<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><table class="table table-hover" style="width: 300px"><div class="form-group"'+'id=retesttt'+endadd+'><a class="list-group-item" ><h5>{msg}</h5><span>{msg1}<center><input type="submit" class="btn btn-default" id="retestbtn" onclick="retest0(endadd)"></center></span></a></div></div></div>';
     str2="";
     for(i=0;i<5;i++){
         var name0=data[i].id
@@ -118,9 +147,11 @@ function tearetest(data) {
     div.scrollTop = div.scrollHeight;
 
 }
-function  retest0() {
+function  retest0(endadd) {
+    var test="#retesttt"+endadd
     var map=new Array();
-    $(".form-group").find("input[type='radio']").each(function(){
+    console.log(map);
+    $(test).find("input[type='radio']").each(function(){
         if($(this).is(":checked")){
             choicCheckOption=$(this).val();
             map.push(choicCheckOption);
@@ -133,14 +164,14 @@ function teacherselect(data){
     tpl='<div class="question">\n' +
         '<div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div>\n' +
         '<div class="message-l">\n' +
-        '<div class="form-group" ><span>你的成绩是</span><span>{msg}</span></div></div></div>'
+        '<div class="form-group" ><span>你的成绩是</span><span>{msg}</span><span>/系统对你的评价是</span><span>{msg1}</span></div></div></div>'
 
-    result = parse(tpl,data);
+    result0=parse(tpl,data.scoree);
+    result = parse0(result0,data.sysscore);
     $("#chat").append(result);
-    score0=data;
+    score0=data.sysscore;
     console.log("分数是："+score0);
     var div = document.getElementById("negotiate");
-
     div.scrollTop = div.scrollHeight;
 }
 
@@ -151,9 +182,10 @@ function stureeva() {
 }
 //4.系统生成自我评价表格，学生提交自我评价
 function reselfeva(ab) {
+    abc=abc+1;
     tpl = '<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><div class="form-group" >\n' +
         '                                <a class="list-group-item" ><p>{msg}</p>\n' +
-        '                                    <select id="selfeva1" class="form-control" name="abt1" >\n' +
+        '                                     <select '+'id=selfevaaa'+abc+" "+ 'class="form-control" name="abt1" >\n' +
         '                                        <option>1</option>\n' +
         '                                        <option>2</option>\n' +
         '                                        <option>3</option>\n' +
@@ -165,7 +197,7 @@ function reselfeva(ab) {
         '                                        <option>9</option>\n' +
         '                                        <option>10</option>\n' +
         '                                    </select></a>\n' +
-        '                        <center><input type="submit" class="btn btn-default" id="selfbtn" onclick="selfeva()"></center>\n' +
+        '                        <center><input type="submit" class="btn btn-default" id="selfbtn" onclick="selfeva(abc)"></center>\n' +
         '                    </div></div></div></div>';
     result2 =parse2(tpl,ab)
     $("#chat").append(result2);
@@ -174,8 +206,10 @@ function reselfeva(ab) {
     var div = document.getElementById("negotiate");
     div.scrollTop = div.scrollHeight;
 }
-function selfeva() {
-    var selfoption=$('#selfeva1 option:selected').val();
+function selfeva(abc) {
+    var selfevaaa='#selfevaaa'+abc+' option:selected'
+    console.log(selfevaaa);
+    var selfoption=$(selfevaaa).val();
     selfeva0=selfoption;
     console.log("重新自评结果是"+selfeva0);
     postselfeva(selfoption,ab,times);
@@ -188,17 +222,40 @@ function answerstu(){
 }
 //5.回答学生的问题
 function readingsopt(data){
+    var Data=data;
+    endadd=endadd+1
     tpl = '<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div>' +
         '<div class="message-l"><div class="form-group" ><div class="list-group-item" ><p>{msg}</p>' +
-        '<input type="text" name="stuask" id="stuask"class="form-control"  placeholder="你的回答" required data-bv-notempty-message="解释原因不为空"><center><input type="submit" class="btn btn-default" id="stuaskbtn" onclick="stuawr()"></center>' +
-        '</div></div></div></div></div>';
-    result = parse(tpl,data[0].stuques);
+        '<input type="text" name="stuask" '+'id=stuask'+endadd+' class="form-control"  placeholder="你的回答" required data-bv-notempty-message="解释原因不为空">'
+
+    var str;
+    var str1="<p>历史回答</p>";
+    var str0;
+    if(Data==null){
+        str='<p>无历史回答</p><center><input type="submit" class="btn btn-default" id="stuaskbtn" onclick="stuawr(endadd)"></center></div></div></div></div></div>';
+    }else {
+        for (var key in Data){
+            if(key!="stuQues"){
+                if(Data[key]!=null){
+                    str0='<li>'+Data[key]+'</li>'
+                    str1=str1+str0;
+                }
+            }
+        }
+        str='<center><input type="submit" class="btn btn-default" id="stuaskbtn" onclick="stuawr(endadd)"></center></div></div></div></div></div>';
+        str=str1+str;
+    }
+
+    tpl=tpl+str;
+    result = parse(tpl,Data.stuQues);
     $("#chat").append(result);
     var div = document.getElementById("negotiate");
     div.scrollTop = div.scrollHeight;
 }
-function stuawr() {
-    var stuawr=$("input").val();
+function stuawr(endadd) {
+    var stuaaa="#stuask"+endadd
+    var stuawr=$(stuaaa).val();
+    console.log(stuawr);
     poststuawr(stuawr,ab,times)
     stureturn()
 }
@@ -209,19 +266,41 @@ function quesstu(){
     var div = document.getElementById("negotiate");
     div.scrollTop = div.scrollHeight;
 }
-function stuQues(){
+function stuQues(data){
+    endadd=endadd+1;
+    var Data=data;
     tpl = '<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div>' +
         '<div class="message-l"><div class="form-group" ><div class="list-group-item" ><p>你的问题将会反馈给老师</p>' +
-        '<input type="text" name="stuques" id="stuques" class="form-control"  placeholder="你的问题" required data-bv-notempty-message="解释原因不为空">' +
-        '<center><input type="submit" class="btn btn-default" id="stuquesbtn" onclick="stuques()"></center>' +
-        '</div></div></div></div></div>';
+        '<input type="text" name="stuques"'+'id=stuquess'+endadd+' class="form-control"  placeholder="你的问题" required data-bv-notempty-message="解释原因不为空">' ;
+
+
+    var str;
+    var str1="<p>历史提问</p>";
+    var str0;
+    if(Data==null){
+        str='<p>无历史提问</p><center><input type="submit" class="btn btn-default" onclick="stuques(endadd)"></center>' +
+            '</div></div></div></div></div>';
+    }else {
+        for (var key in Data){
+            if(Data[key]!=null){
+                str0='<li>'+Data[key]+'</li>'
+                str1=str1+str0;
+            }
+        }
+        str='<center><input type="submit" class="btn btn-default" onclick="stuques(endadd)"></center>' +
+            '</div></div></div></div></div>';
+        str=str1+str;
+    }
+    tpl=tpl+str;
     $("#chat").append(tpl);
     var div = document.getElementById("negotiate");
     div.scrollTop = div.scrollHeight;
 }
 //提问
-function stuques() {
-    var stuques=$("#stuques").val();
+function stuques(endadd) {
+    var quesss="#stuquess"+endadd
+    var stuques=$(quesss).val();
+    console.log(stuques);
     poststuques(stuques,ab,times);
     stureturn();
 }
@@ -253,8 +332,8 @@ function decision(score0,selfeva0) {
     div.scrollTop = div.scrollHeight;
 }
 function compro(data) {
-    comscore=data;
-    tpl='<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><div class="form-group"><div class="list-group-item" ><h5>你的测评结果将更改为{msg}</h5><li><a onclick="disagree0(comagree)">我同意</a></li><li><a onclick="disagree0(comdisagree)">我不同意</a></li></p></div></div></div>';
+    score0=data;
+    tpl='<div class ="row"><div class="question"><div class="profile-l"><img src="bootstrap/img/teacher.JPG"></div><div class="message-l"><div class="form-group"><div class="list-group-item" ><h5>你的测评结果将更改为{msg}</h5><li><a onclick="agree0(comagree)">我同意</a></li><li><a onclick="disagree0(comdisagree)">我不同意</a></li></p></div></div></div>';
     result = parse(tpl,data);
     $("#chat").append(result);
     var div = document.getElementById("negotiate");
@@ -289,6 +368,24 @@ function addStuMsg(ab,times) {
         }
     });
 }
+
+//2.请求查看历史解释
+function addStuexp(ab,times) {
+    $.ajax({
+        url: '/findExp',
+        data: {
+            ability:ab,
+            paperid:times
+        },
+        dataType: 'json',
+        type: 'post',
+        success: function(data) {
+            teacherask(data)
+            console.log(data);
+
+        }
+    });
+}
 //2.解释测评结果
 function postexplain(text,option,ab,times) {
     $.ajax({
@@ -303,7 +400,6 @@ function postexplain(text,option,ab,times) {
         type: 'post',
         success: function(data) {
             console.log(data);
-            stureturn();
         }
     });
 }
@@ -389,6 +485,23 @@ function poststuawr(stuawr,ab,times) {
         }
     });
 }
+//6.学生向老师提问
+function askstuQues(ab,times) {
+    $.ajax({
+        url: '/returnstuQues',
+        data: {
+            paperid:times,
+            ab:ab
+        },
+        dataType: 'json',
+        type: 'post',
+        success: function(data) {
+            console.log(data);
+            stuQues(data);
+
+        }
+    });
+}
 //6.提交学生的问题
 function poststuques(stuques,ab,times) {
     $.ajax({
@@ -412,7 +525,9 @@ function agree(ab,times,yon) {
         data: {
             ability: ab,
             paperid:times,
-            isagree:yon
+            isagree:yon,
+            sys:score0,
+            selfeva:selfeva0
         },
         dataType: 'json',
         type: 'post',
@@ -474,7 +589,8 @@ function radiolog(id,value) {
 }
 
 function endnego(){
-    tpl='<div class ="row"><div class="answer"><div class="profile-r"><img src="bootstrap/img/student.JPG"></div><div class="message-r"><span><a href="/index">退出</a></span></div></div>';
+    var tim=timetoPaperid(times);
+    tpl='<div class ="row"><div class="answer"><div class="profile-r"><img src="bootstrap/img/student.JPG"></div><div class="message-r"><span><a href="/result?times='+tim+'">退出</a></span></div></div>';
     $("#chat").append(tpl);
     var div = document.getElementById("negotiate");
     div.scrollTop = div.scrollHeight;
@@ -503,4 +619,27 @@ function parse2(tpl, ab) {
         return tpl.replace('{msg}',"【结果分析】");
     }
     return tpl.replace('{msg}', ab);
+}
+function timetoPaperid(s) {
+    var paperid=null;
+    if(s=="2018-10-10 SRL"){
+        paperid="1";
+    }else if(s=="2018-10-17 SRL"){
+        paperid="2";
+    }else if(s=="2018-10-24 SRL"){
+        paperid="3";
+    }else if(s=="2018-11-7 SRL"){
+        paperid="4";
+    }else if(s=="2018-11-14 SRL"){
+        paperid="5";
+    }else if(s=="2018-11-21 SRL"){
+        paperid="6";
+    }else if(s=="2018-12-12 SRL"){
+        paperid="7";
+    }else if(s=="2018-12-19 SRL"){
+        paperid="8";
+    }else if(s=="2018-12-26 SRL"){
+        paperid="9";
+    }
+    return paperid;
 }

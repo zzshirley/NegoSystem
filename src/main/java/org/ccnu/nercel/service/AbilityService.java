@@ -33,6 +33,5 @@ public class AbilityService {
     }
     public void initAbility(Ability ab){
         abilityRepo.save(ab);
-
     }
 }
